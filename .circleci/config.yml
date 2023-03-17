@@ -1,0 +1,220 @@
+version: 2.1
+
+orbs:
+  kubernetes: circleci/kubernetes@0.11.0
+  docker: circleci/docker@2.0.2
+  aws-cli: circleci/aws-cli@3.1
+
+parameters:
+  docker-image:
+    type: string
+    default: "node:18"
+  workingdir:
+    type: string
+    default: "~/project"
+
+commands:
+  setup-project:
+    steps:
+      - run:
+          name: Setup Environment Variables
+          command: |
+            echo "export AWS_DEFAULT_REGION=us-east-2" >> $BASH_ENV
+            echo "export PATH=$(npm bin):$PATH" >> $BASH_ENV
+
+      - run:
+          name: "Install git and SSH client"
+          command: |
+              set +x
+              if [ -x "$(command -v apt-get)" ]; then
+                apt-get update
+                apt-get install -y git openssh-client ca-certificates
+              elif [ -x "$(command -v yum)" ]; then
+                yum install -y git openssh-client ca-certificates
+              fi
+      - checkout
+
+#      - run:
+#          name: Install Docker
+#          command: |
+#            curl -sSL https://get.docker.com/ | sh
+#            usermod -aG docker $(whoami)
+
+#      - run:
+#          name: Install yarn
+#          command: curl -o- -L https://yarnpkg.com/install.sh | bash
+  install_js_dependencies:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Install Global JS Dependencies
+          command: |
+            npm i -g npm@6
+            npm i -g check-node-version
+      - run:
+          name: Install JS Dependencies
+          command: |
+            npm install
+      - save_cache:
+          paths:
+            - node_modules
+            - package-lock.json
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+  use_node:
+    steps:
+      - run:
+          name: 'Install Project Node'
+          command: |
+            set +x
+            source ~/.bashrc
+
+            nvm install
+            # nvm use
+            NODE_DIR=$(dirname $(which node))
+            echo "export PATH=$NODE_DIR:\$PATH" >> $BASH_ENV
+      - run: node -v
+
+  attach_project:
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: << pipeline.parameters.workingdir >>
+      - run:
+          name: Setup Environment
+          command: |
+            echo "export AWS_DEFAULT_REGION=us-east-2" >> $BASH_ENV
+            echo "export PATH=$(pwd)/node_modules/.bin:$PATH" >> $BASH_ENV
+
+  build_docker:
+    steps:
+      - run:
+          name: Docker Login
+          command: docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_ACCESS_TOKEN
+      - run:
+          name: Docker Library install for multi architecture builds
+          command: docker run -it --rm --privileged tonistiigi/binfmt --install all
+      - run:
+          name: Build Docker Image
+          command: source ./scripts/docker/buildx.sh
+#      - run:
+#           name: Docker ECR Login
+#           command: aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REPO
+#      - run:
+#          name: Docker Login
+#          command: aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REPO
+#      - run:
+#          name: Docker Push
+#          command: docker push $DOCKER_IMAGE_NAME
+
+######################      JOBS      ########################
+
+jobs:
+  setup:
+    docker:
+      - image: << pipeline.parameters.docker-image >>
+    working_directory: << pipeline.parameters.workingdir >>
+    steps:
+      - setup-project
+      - install_js_dependencies
+      - run:
+          name: Env versioning
+          command: source env-ci-version
+#      - run:
+#          name: Setup Version
+#          command: |
+#            source env-ci-version
+#            apply-version
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  testing:
+    machine:
+      image: ubuntu-2004:202111-02
+#    resource_class: large # EC2 with 4 cpu
+    working_directory: << pipeline.parameters.workingdir >>
+    steps:
+      - attach_project
+      - run:
+          name: Setup missing apt libraries
+          command: |
+              set +x
+              sudo apt-get update
+              sudo apt-get install -y curl net-tools
+      - run:
+          name: Docker Versions
+          command: |
+            set +x
+            docker -v
+            docker-compose -v
+      - use_node
+      - run:
+          name: Startup Services
+          command: |
+            cd ./services/circleci
+            docker-compose up -d
+            echo 'Sleep 10 sec. Because we can get issues from services. Postgres for example.'
+            sleep 10
+      - run: docker ps -a
+      - run:
+          name: Setup Services to Environment
+          command: |
+            echo "export PG=postgresql://postgres:postgres@localhost:5432/postgres" >> .env.local
+      - run:
+          name: pg_isready
+          command: |
+            set +x
+            docker logs postgres_sandbox
+            docker exec -i postgres_sandbox pg_isready --dbname postgres --username=reaction
+      - run: nc -vz localhost 5432
+      - run: netstat -tpln
+      - run:
+          name: Migration
+          command: npm run migrate
+      - run:
+          name: Tests
+          command: npm run test
+          environment:
+            TEST_TRANSACTION_DISABLED: true
+            ALLOW_DANGEROUS_UPDATES: true
+
+  docker-build:
+    resource_class: large
+    docker:
+      - image: 'cimg/base:stable'
+    working_directory: << pipeline.parameters.workingdir >>
+    steps:
+      - setup_remote_docker:
+          version: 20.10.14
+      - attach_project
+      - build_docker
+
+######################      Workflow      ########################
+
+workflows:
+  version: 2.1
+  deployments:
+    jobs:
+      - setup
+#      - testing:
+#          requires:
+#            - setup
+      - docker-build:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - setup
+#            - testing
+
+#      - kubernetes-image-apply:
+#          requires:
+#            - docker-build
+#          filters:
+#            branches:
+#              only:
+#                - master

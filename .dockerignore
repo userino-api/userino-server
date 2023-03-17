@@ -1,0 +1,18 @@
+.git
+node_modules
+.nyc_output
+mochawesome-report
+npm-debug.log
+sql
+typings
+package-lock.json
+
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+kubernetes
+
+# including root of build context
+**/*.local.*
+*.local

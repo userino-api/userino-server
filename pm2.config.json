@@ -1,0 +1,10 @@
+{
+  "apps" : [
+    {
+      "name"        : "auth-server",
+      "script"      : "./index.js",
+      "instances"   : 1,
+      "restart_delay": 4001
+    }
+  ]
+}

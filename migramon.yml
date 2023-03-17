@@ -1,0 +1,12 @@
+
+
+require:
+  - ./polyfill.js
+
+migrator: ./migrations/.config/migramon-setup.ts
+dir: ./migrations
+
+file:
+  name: "{name}.ts"
+  template_file: ./migrations/.config/template.ts
+
