@@ -11,7 +11,7 @@ describe('/user:/email/check [POST]', () => {
   })
 
   it('works', async () => {
-    const { status, body } = await agent.post('/local/email/check').set('authorization', user.token)
+    const { status, body } = await agent.post('/email/check').set('authorization', user.token)
     expect(status).to.equals(200)
     expect(body).to.have.property('is_verified', false)
   })
