@@ -22,8 +22,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@migramon/migrate": "^0.0.3",
-    "@migramon/postgres-plugin": "^0.0.3",
+    "@migramon/migrate": "^0.0.5",
+    "@migramon/postgres-plugin": "^0.1.0",
     "@octoguild-licence/client": "^0.0.6",
     "@octoguild-licence/express": "^0.0.2",
     "@slack/webhook": "^6.1.0",

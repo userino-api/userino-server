@@ -2,7 +2,7 @@ import client from '@libs/pg'
 
 export default async function () {
   await client.query(`
-create table public.email_verifications
+create table email_actions
 (
     user_id    uuid,
     email      varchar(200) not null,
@@ -10,9 +10,6 @@ create table public.email_verifications
     expired_at timestamptz,
     created_at timestamptz default now()
 );
-
-alter table email_verifications
-    rename to email_actions;
 
 alter table email_actions
     add action varchar(30) not null;

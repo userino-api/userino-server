@@ -8,7 +8,7 @@ orbs:
 parameters:
   docker-image:
     type: string
-    default: "node:18"
+    default: "node:16"
   workingdir:
     type: string
     default: "~/project"
@@ -19,8 +19,8 @@ commands:
       - run:
           name: Setup Environment Variables
           command: |
-            echo "export AWS_DEFAULT_REGION=us-east-2" >> $BASH_ENV
-            echo "export PATH=$(npm bin):$PATH" >> $BASH_ENV
+            echo "export AWS_DEFAULT_REGION=us-east-2" >> $BASH_ENV;
+            echo "export PATH=$(npm bin):$PATH" >> $BASH_ENV;
 
       - run:
           name: "Install git and SSH client"
@@ -51,8 +51,8 @@ commands:
       - run:
           name: Install Global JS Dependencies
           command: |
-            npm i -g npm@6
-            npm i -g check-node-version
+            set +x;
+            npm i -g check-node-version;
       - run:
           name: Install JS Dependencies
           command: |
@@ -154,7 +154,7 @@ jobs:
       - run:
           name: Startup Services
           command: |
-            cd ./services/circleci
+            cd ./.circleci
             docker-compose up -d
             echo 'Sleep 10 sec. Because we can get issues from services. Postgres for example.'
             sleep 10
@@ -199,9 +199,9 @@ workflows:
   deployments:
     jobs:
       - setup
-#      - testing:
-#          requires:
-#            - setup
+      - testing:
+          requires:
+            - setup
       - docker-build:
           filters:
             branches:
@@ -209,7 +209,7 @@ workflows:
                 - master
           requires:
             - setup
-#            - testing
+            - testing
 
 #      - kubernetes-image-apply:
 #          requires:
