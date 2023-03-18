@@ -31,9 +31,7 @@ alter table firebase.app_configs
   await client.query(`
 create table app_auth_list
 (
-    key        varchar(100)
-        constraint auth_list_pk
-            primary key,
+    key        varchar(100),
     is_enabled boolean     default false,
     created_at timestamptz default now()
 );
@@ -50,12 +48,5 @@ alter table app_auth_list
           alter table app_auth_list
     add constraint app_auth_list_pk
         primary key (app_id, key);
-
-     alter table app_auth_list
-          add constraint app_auth_list_pk
-              primary key (app_id, key);
-              
-              
-
   `)
 }
