@@ -1,5 +1,5 @@
 class LogicError extends Error {
-  errorCode: string
+  errorCode?: string
 
   httpStatus: number
 

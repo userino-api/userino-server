@@ -38,7 +38,7 @@ decodedTokenWithNoName.name = ' '
 decodedTokenWithNoName.email = 'firebase-no-name@mail.com'
 decodedTokenWithNoName.uid = 'no-token-uid'
 
-sinon.stub(admin.credential, 'cert').returns({})
+sinon.stub(admin.credential, 'cert').returns({} as any)
 
 export const stubFirebase = sinon.stub(firebase, 'initializeApp').get(() => () => ({
   auth() {
