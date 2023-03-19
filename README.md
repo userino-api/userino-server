@@ -1,24 +1,27 @@
 
-Userino server is a main api server for user authorization. 
-Service handles authorization for your app. You can setup different 
+Userino is an open source service for user authorization.
+Service handles authorization for your app. You can setup different
 authorization type using this service.
 
-# Development
+## Why userino
 
-Run container: `docker-compose up`
+Almost every app requires authorization to define user identity.
+Userino is created to be ready to use service that can
+handle everything related to user auth.
+It is secure and easy to ingrate service.
+
+## Supported Authorization List
+
+| Auth Type        | Status |
+|:-----------------|:------:|
+| local (password) |   ✓    |
+| firebase         |   ✓    | 
+| otp              |   ✓    | 
+| phone            |  soon  |
+| google           | to do  |
+| facebook         | to do  |
 
 
-## Database Migrations
+# Links
 
-Apply migrations: `npm run migrate`
-
-Create new migration with cmd: `migramon create 2-1-add-something-new`
-
-
-## Development
-
-Create local `.env.local` file.
-It may look like: 
-```dotenv
-PG=postgresql://postgres:postgres@localhost:5432/auth
-```
+- [Userino Development](./docs/DEVELOPMENT.md)
