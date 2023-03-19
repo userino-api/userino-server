@@ -3,6 +3,8 @@ Userino is an open source service for user authorization.
 Service handles authorization for your app. You can setup different
 authorization type using this service.
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/userino-api/userino-server/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/userino-api/userino-server/tree/master)
+
 ## Why userino
 
 Almost every app requires authorization to define user identity.
