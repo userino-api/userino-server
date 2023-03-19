@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  userino:
+    image: zvsx001/userino-server
+    ports:
+      - 7301:7301
+      - 7302:7302
+      - 7303:7303
+    environment:
+      REDIS_HOST: redis://host.docker.internal:6379
+      KAFKA_HOSTS: host.docker.internal:9092,host.docker.internal:9093
+      PG: postgresql://postgres:postgres@host.docker.internal:5432/auth

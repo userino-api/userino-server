@@ -4,6 +4,7 @@ import dashboardRouter from './api/dashboard/router'
 import userRouter from './api/user/server'
 import config from './config/settings'
 import createServer from './libs/express/createServer'
+import './migrations/.config/auto'
 
 const userServer = createServer()
 userServer.use(userRouter)
@@ -24,11 +25,11 @@ serviceStartup.start().then(() => {
     console.log(`Listening port: ${config.ports.user}`)
   })
 
-  adminServer.listen(config.ports.admin, () => {
-    console.log(`Listening port: ${config.ports.admin}`)
-  })
-
   dashboardServer.listen(config.ports.dashboard, () => {
     console.log(`Listening port: ${config.ports.dashboard}`)
+  })
+
+  adminServer.listen(config.ports.admin, () => {
+    console.log(`Listening port: ${config.ports.admin}`)
   })
 })

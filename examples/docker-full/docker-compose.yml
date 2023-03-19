@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  userino:
+    image: zvsx001/userino-server
+    ports:
+      - 4001:4001
+    environment:
+      REDIS_HOST: redis://redis:6379
+      KAFKA_HOSTS: kafka:9092
+      PG: postgresql://postgres:postgres@userino-postgres:5432/userino
+
+  userino-postgres:
+    image: postgres:15
+    hostname: userino-postgres
+    environment:
+      POSTGRES_DB: userino
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+  redis:
+    image: redis
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    ports:
+      - '2181:2181'
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: yes
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    hostname: kafka
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=SASL_SSL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=SASL_SSL://:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+
+#    networks:
+#      - app-services
+
+
+#networks:
+#  app-services:
+#    name: app-services
+#    external: true

@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   userino-server:
-    container_name: userino-server
+    container_name: zvsx001/userino-server
     build: .
 #    network_mode: "host"
     ports:
