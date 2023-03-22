@@ -5,7 +5,7 @@ authorization type using this service.
 
 [![Github](
 https://img.shields.io/badge/github-userino-blue?style=flat&logo=github
-)](https://github.com/userino-api/userino-ui)
+)](https://github.com/userino-api/userino-server)
 
 [![Docker](
 https://img.shields.io/badge/docker-zvsx001%2Fuserino--server-blue?style=flat&logo=docker
