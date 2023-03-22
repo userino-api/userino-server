@@ -9,7 +9,7 @@ import dev from './settings.development'
 
 const {
   NODE_ENV, PORT, ADMIN_PORT, DASHBOARD_PORT, PG, KAFKA_HOSTS,
-  REDIS_HOST,
+  REDIS_HOST, LICENCE_SERVER, LICENCE_APP_ID, LICENCE_APP_KEY,
 } = process.env || {}
 
 const env = NODE_ENV || 'development'
@@ -21,6 +21,8 @@ export type Config = typeof config
 
 let kafkaHosts: string[] = ['0.0.0.0:9093', '0.0.0.0:9094', '0.0.0.0:9095']
 if (KAFKA_HOSTS) kafkaHosts = KAFKA_HOSTS.split(',')
+
+const isLicenceEnabled = !!LICENCE_SERVER
 
 let config = {
   env,
@@ -53,17 +55,14 @@ let config = {
     max_tries_in_a_row: 5, // within +/- 5 minutes
   },
 
-  licence: {
-    // app_id: 'f464eb49-5f79-4a23-aa0d-91849e9c46a5',
-    // key: 'aa6ba5fe-0c31-447a-9301-24233b4477b4',
-
-    app_id: '2e962f38-5634-4af3-9ea3-1ff56b674af6',
-    key: '4610a706-4b68-4197-bc55-67b98861e25f',
+  licence: isLicenceEnabled ? {
+    app_id: LICENCE_APP_ID,
+    key: LICENCE_APP_KEY,
 
     // server: LICENCE_SERVER || 'ws://localhost:10000',
     // privateKey: LICENCE_PRIVATE_KEY as string,
     // privateKeyPassphrase: LICENCE_PRIVATE_KEY_PASSPHRASE as string,
-  },
+  } : null,
 }
 
 if (!isProduction) {

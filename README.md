@@ -56,3 +56,4 @@ services:
 # Links
 
 - [Userino Development](./docs/DEVELOPMENT.md)
+- [Licence Server](./docs/LICENCE-SERVER.md)

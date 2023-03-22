@@ -1,14 +1,15 @@
 import { socket, configureLicence } from '@octoguild-licence/client'
 import config from '../config/settings'
-
 import '@octoguild-licence/client/startup'
 
 const prefix = 'SOCKET:'
 
-configureLicence({
-  app_id: config.licence.app_id,
-  key: config.licence.key,
-})
+if (config.licence) {
+  configureLicence({
+    app_id: config.licence.app_id,
+    key: config.licence.key,
+  })
+}
 
 // will create two distinct connections
 
