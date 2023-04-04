@@ -65,3 +65,10 @@ services:
 
 - [Userino Development](./docs/DEVELOPMENT.md)
 - [Licence Server](./docs/LICENCE-SERVER.md)
+
+# Extra available libs:
+
+- [@userino/admin-api](https://github.com/userino-api/userino-admin-api) - 
+js admin api client
+- [@userino/express](https://github.com/userino-api/userino-express) - 
+express middleware to authenticate user automatically
