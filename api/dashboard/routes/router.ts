@@ -1,11 +1,12 @@
 import express from 'express'
 import { plugins } from '../../../plugins/plugins'
+import healthGet from '../../shared/routes/health.get'
 import appRouter from './app/router'
 // import userRouter from './user/router'
 
 const app = express.Router()
 
-app.all('/ping', (req, res) => res.send('PONG'))
+app.use(healthGet)
 
 app.use('/app', appRouter)
 // app.use('/user', userRouter)
