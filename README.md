@@ -27,6 +27,7 @@ It is secure and easy to ingrate service.
 | local (password) |   ✓    |
 | firebase         |   ✓    | 
 | otp              |   ✓    | 
+| remote auth      |   ✓    | 
 | phone            |  soon  |
 | google           | to do  |
 | facebook         | to do  |
@@ -55,11 +56,12 @@ services:
 
 - `PG` - postgres connection string
 - `REDIS_HOST` - redis url
-- `KAFKA_HOSTS` - list of hosts for kafka. Default: `0.0.0.0:9093,0.0.0.0:9094,0.0.0.0:9095`
+- `KAFKA_HOSTS` - list of hosts for kafka. Default: `0.0.0.0:9092`
 - `PORT` - port for public user server. Default: 7301
 - `DASHBOARD_PORT` - port for dashboard server. Default: 7302
 - `ADMIN_PORT` - port for admin api server. Default: 7303
 - `MIGRATIONS_DISABLED` - migrations will not be run during server startup. Migrations are enabled by default.
+- `APP_PRIMARY_DISABLED` - disallow primary app
 
 # Links
 

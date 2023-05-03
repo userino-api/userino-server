@@ -19,7 +19,7 @@ console.log('CONFIG ENV: ', envColored)
 
 export type Config = typeof config
 
-let kafkaHosts: string[] = ['0.0.0.0:9093', '0.0.0.0:9094', '0.0.0.0:9095']
+let kafkaHosts: string[] = ['0.0.0.0:9092']
 if (KAFKA_HOSTS) kafkaHosts = KAFKA_HOSTS.split(',')
 
 const isLicenceEnabled = !!LICENCE_SERVER
@@ -30,6 +30,10 @@ let config = {
     user: PORT || 7301,
     dashboard: DASHBOARD_PORT || 7302,
     admin: ADMIN_PORT || 7303,
+  },
+
+  app: {
+    isPrimaryEnabled: !process.env.APP_PRIMARY_DISABLED,
   },
 
   pgConnectionString: PG || '',
