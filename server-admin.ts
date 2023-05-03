@@ -3,7 +3,7 @@ import adminServer from './api/admin/router'
 import config from './config/settings'
 import app from './libs/express/expressRouter'
 
-app.use('/admin', adminServer)
+app.use(adminServer)
 
 // 404 Not found
 app.all('*', (req, res) => {

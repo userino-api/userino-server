@@ -3,7 +3,7 @@ import dashboardServer from './api/dashboard/router'
 import config from './config/settings'
 import app from './libs/express/expressRouter'
 
-app.use('/dashboard', dashboardServer)
+app.use(dashboardServer)
 
 // 404 Not found
 app.all('*', (req, res) => {
