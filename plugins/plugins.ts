@@ -1,9 +1,10 @@
 import { Router } from 'express'
 import FirebasePlugin from './firebase'
 import firebasePlugin from './firebase/plugin'
+import remoteAuthPlugin from './remote-auth/plugin'
 
 // new style
-export const plugins = [firebasePlugin]
+export const plugins = [firebasePlugin, remoteAuthPlugin]
 
 /**
  * @NOTE: This functionality must be automated in future.
@@ -13,7 +14,7 @@ export const plugins = [firebasePlugin]
 // todo plugin probably want also use consumer subs or so on...
 const Plugins = {
   // what about admin routes? Maybe we need to use: addUserRoutes, addAdminRoutes?
-  addRoutes(app:Router) {
+  addRoutes(app: Router) {
     FirebasePlugin.addRoutes(app)
   },
 }

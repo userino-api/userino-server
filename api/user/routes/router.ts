@@ -1,6 +1,6 @@
 import express from 'express'
 import authMiddleWares from '@middlewares/authMiddleWares'
-import plugins from '../../../plugins/plugins'
+import { plugins } from '../../../plugins/plugins'
 import healthGet from '../../shared/routes/health.get'
 import appMiddleWare from '../middlewares/appMiddleWare'
 import emailRouter from './email/router'
@@ -17,7 +17,13 @@ app.use('/local', localAuthRouter)
 app.use('/email', emailRouter)
 
 // plugins might need public scope
-plugins.addRoutes(app)
+plugins.forEach(plugin => {
+  const { route, routers } = plugin
+  const pluginRouter = routers?.user
+  if (!pluginRouter) return null
+
+  app.use(route, pluginRouter)
+})
 
 app.use(localAuthRouter)
 
