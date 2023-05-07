@@ -32,14 +32,14 @@ async function get(params: Pick<RemoteAuthSession, 'id'>): Promise<RemoteAuthSes
   return rows[0]
 }
 
-async function approve(params: Pick<RemoteAuthSession, 'id'>): Promise<RemoteAuthSession | null> {
-  const { id } = params
+async function approve(params: Pick<RemoteAuthSession, 'id' | 'user_id'>): Promise<RemoteAuthSession | null> {
+  const { id, user_id } = params
 
   const { rows } = await client.query<RemoteAuthSession>(`
     UPDATE remote.sessions
-    SET is_approved = true
+    SET is_approved = true, user_id = $2
     WHERE id = $1
-  `, [id])
+  `, [id, user_id])
 
   return rows[0]
 }

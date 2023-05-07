@@ -10,8 +10,9 @@ interface RouteResponse {}
 
 app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/accept', async (req, res) => {
   const { remoteSession } = res.locals
+  const { user_id } = req.session
 
-  await remoteAuthSessionModel.approve({ id: remoteSession.id })
+  await remoteAuthSessionModel.approve({ id: remoteSession.id, user_id })
 
   res.send()
 })

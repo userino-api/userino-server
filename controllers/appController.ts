@@ -51,6 +51,7 @@ async function deleteApp({ app_id }: { app_id: string }) {
 }
 
 export default {
+  authorize,
   authorizeAccount,
   deleteConnection,
   deleteApp,

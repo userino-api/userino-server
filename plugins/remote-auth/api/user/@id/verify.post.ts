@@ -15,7 +15,7 @@ type RouteResponse = {
 
 router.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/verify',
   async (req, res) => {
-    const { app_id, user_id, account_id } = req.session
+    const { app_id } = req.session
     const { remoteSession } = res.locals
 
     if (!remoteSession.is_approved) {
@@ -30,7 +30,7 @@ router.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>
     // }
 
     // step 4 => Authorize user. Create new token for this user
-    const tokens = await appController.authorizeAccount({ app_id, account_id })
+    const tokens = await appController.authorize({ user_id: remoteSession.user_id })
 
     res.send({
       is_approved: true,
