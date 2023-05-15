@@ -57,6 +57,10 @@ services:
 - `PG` - postgres connection string
 - `REDIS_HOST` - redis url
 - `KAFKA_HOSTS` - list of hosts for kafka. Default: `0.0.0.0:9092`
+- `KAFKA_SSL` - enable kafka ssl
+- `KAFKA_SASL_MECHANISM` - (optional)
+- `KAFKA_SASL_USERNAME` - (optional)
+- `KAFKA_SASL_PASSWORD` - (optional)
 - `PORT` - port for public user server. Default: 7301
 - `DASHBOARD_PORT` - port for dashboard server. Default: 7302
 - `ADMIN_PORT` - port for admin api server. Default: 7303

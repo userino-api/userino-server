@@ -8,7 +8,11 @@ import _ from 'lodash'
 import dev from './settings.development'
 
 const {
-  NODE_ENV, PORT, ADMIN_PORT, DASHBOARD_PORT, PG, KAFKA_HOSTS,
+  NODE_ENV, PORT, ADMIN_PORT, DASHBOARD_PORT, PG,
+  KAFKA_HOSTS,
+  KAFKA_SSL,
+  KAFKA_SASL_MECHANISM,
+  KAFKA_SASL_USERNAME, KAFKA_SASL_PASSWORD,
   REDIS_HOST, LICENCE_SERVER, LICENCE_APP_ID, LICENCE_APP_KEY,
 } = process.env || {}
 
@@ -44,6 +48,12 @@ let config = {
 
   kafka: {
     brokers: kafkaHosts,
+    ssl: !!KAFKA_SSL,
+    sasl: {
+      mechanism: KAFKA_SASL_MECHANISM || 'plain',
+      username: KAFKA_SASL_USERNAME,
+      password: KAFKA_SASL_PASSWORD,
+    },
   },
 
   client: {
