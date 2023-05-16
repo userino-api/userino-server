@@ -1,7 +1,7 @@
 import serviceStartup from 'service-startup'
 import kafka from './kafka'
 
-export const producer = kafka.producer()
+export const producer = kafka.producer({ allowAutoTopicCreation: true })
 
 const run = async () => {
   // Producing

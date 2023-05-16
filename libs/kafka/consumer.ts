@@ -2,6 +2,7 @@ import kafka from './kafka'
 
 export const consumer = kafka.consumer({
   groupId: 'test2',
+  allowAutoTopicCreation: true,
 })
 
 const run = async () => {
