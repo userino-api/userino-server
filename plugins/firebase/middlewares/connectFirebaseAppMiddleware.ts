@@ -1,38 +1,25 @@
 import { RequestHandler } from 'express'
-import admin from 'firebase-admin'
-import firebaseAppConfigModel from '../models/firebaseAppConfigModel'
+import firebaseClientUtils, { FirebaseAppClient } from '../utils/firebaseClientUtils'
 
 export interface RouterLocals {
-  firebaseApp: ReturnType<typeof admin.initializeApp>
+  firebaseApp: FirebaseAppClient
 }
-
-const connectedApps: Record<string, RouterLocals['firebaseApp']> = {}
 
 const connectFirebaseAppMiddleware: RequestHandler = async (req, res, next) => {
   const { app_id } = req.session
 
-  let firebaseApp: RouterLocals['firebaseApp']
-  if (connectedApps[app_id]) {
-    firebaseApp = connectedApps[app_id]
-  } else {
-    const firebaseAppConfig = await firebaseAppConfigModel.get({ app_id })
-    if (!firebaseAppConfig?.config) {
-      return res.sendError(500, 'No configuration')
+  try {
+    let firebaseApp = firebaseClientUtils.getInitializedFirebaseApp({ app_id })
+    const locals: RouterLocals = {
+      ...res.locals,
+      firebaseApp,
     }
+    res.locals = locals
 
-    const serviceAccount = typeof firebaseAppConfig.config === 'string' ? JSON.parse(firebaseAppConfig.config) : firebaseAppConfig.config
-    firebaseApp = admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    }, app_id)
+    next()
+  } catch (e) {
+    res.sendError(e)
   }
-
-  const locals: RouterLocals = {
-    ...res.locals,
-    firebaseApp,
-  }
-  res.locals = locals
-
-  next()
 }
 
 export default connectFirebaseAppMiddleware
