@@ -5,9 +5,10 @@ import firebaseAppConfigModel from '../models/firebaseAppConfigModel'
 export type FirebaseAppClient = ReturnType<typeof admin.initializeApp>
 
 // todo how we can invalidate this app? when config is updated
+// todo implement config versioning and use version as key too
 const connectedApps: Record<string, FirebaseAppClient> = {}
 
-export const getInitializedFirebaseApp = ({ app_id }: { app_id: string}): FirebaseAppClient => {
+export const getInitializedFirebaseApp = async ({ app_id }: { app_id: string}): Promise<FirebaseAppClient> => {
   if (connectedApps[app_id]) {
     const firebaseApp = connectedApps[app_id]
     return firebaseApp
