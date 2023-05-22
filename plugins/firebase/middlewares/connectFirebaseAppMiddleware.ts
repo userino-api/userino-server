@@ -9,7 +9,7 @@ const connectFirebaseAppMiddleware: RequestHandler = async (req, res, next) => {
   const { app_id } = req.session
 
   try {
-    let firebaseApp = firebaseClientUtils.getInitializedFirebaseApp({ app_id })
+    let firebaseApp = await firebaseClientUtils.getInitializedFirebaseApp({ app_id })
     const locals: RouterLocals = {
       ...res.locals,
       firebaseApp,
