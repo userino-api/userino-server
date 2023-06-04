@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  kafka:
+    container_name: kafka
+    image: 'bitnami/kafka:latest'
+    ports:
+      - 9092:9092
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes

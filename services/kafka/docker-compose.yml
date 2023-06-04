@@ -9,8 +9,6 @@ services:
       - "zookeeper1_data:/bitnami"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
-    networks:
-      - app-services
     restart: always
 
   kafka1:
@@ -32,8 +30,6 @@ services:
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
     depends_on:
       - zookeeper
-    networks:
-      - app-services
     restart: always
 
   kafka2:
@@ -55,8 +51,6 @@ services:
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
     depends_on:
       - zookeeper
-    networks:
-      - app-services
     restart: always
 
 
@@ -79,8 +73,6 @@ services:
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
     depends_on:
       - zookeeper
-    networks:
-      - app-services
     restart: always
 
 
@@ -94,7 +86,3 @@ volumes:
   kafka3_data:
     driver: local
 
-networks:
-  app-services:
-    name: app-services
-    external: true
