@@ -1,18 +1,18 @@
-'use strict'
+import colors from 'colors'
+import _ from 'lodash'
+import morgan from 'morgan'
+import getDeviceInfoFromRequest from '../utils/getDeviceInfoFromRequest'
+import logger from './logger'
 
 const isTest = process.env.NODE_ENV === 'test'
 
-import _ from 'lodash'
-import morgan from 'morgan'
-import colors from 'colors'
-import logger from './logger'
-
-
 // !isTest &&
-const middleWare = (options?) => morgan((tokens, req, res) => {
+const middleWare = options => morgan((tokens, req, res) => {
   const { id } = req
   const method = tokens.method(req, res)
   const _url = tokens.url(req, res)
+
+  const deviceInfo = getDeviceInfoFromRequest(req)
 
   if (_url === '/' || _url.indexOf('/images') === 0) return null
 
@@ -69,6 +69,7 @@ const middleWare = (options?) => morgan((tokens, req, res) => {
     _url,
     colors.cyan(_app),
     colors.cyan(_user),
+    colors.cyan(deviceInfo.device_type || ''),
     body,
     _status,
     _length,
@@ -83,6 +84,5 @@ const middleWare = (options?) => morgan((tokens, req, res) => {
     logger.log('', messageStr) // to keep same as error
   }
 })
-
 
 export default middleWare

@@ -2,9 +2,11 @@ import bcrypt from 'bcrypt'
 import express from 'express'
 import { body } from 'express-validator'
 import appController from '@controllers/appController'
+import expressUtils from '@libs/express/expressUtils'
 import middleWares from '@libs/middleWares'
 import createCustomIpRateLimiter from '@middlewares/rateLimits/createCustomIpRateLimiter'
 import accountLocalModel from '@models/accountLocalModel'
+import onLoginEnd from '../../../../hooks/onLoginEnd'
 
 const app = express.Router()
 
@@ -17,8 +19,9 @@ app.post('/login',
   middleWares.checkValidation,
   async (req, res) => {
     const { app_id } = req.session
+    const ip = expressUtils.getClientIP(req) as string
     let {
-      email, password, device, localize,
+      email, password, device,
     } = req.body
     email = email.toLowerCase()
 
@@ -32,47 +35,16 @@ app.post('/login',
       return res.sendError(403, 'Incorrect credentials')
     }
 
-    // if (!user_id) {
-    // todo here we can create app related user.
-    // // link or create account
-    //   const userAccount = await userAccountsModel.getByEmail({
-    //     email,
-    //     role: 'employee',
-    //   })
-    //   if (userAccount) {
-    //   // todo (not sure) user account should be linked during creation probably.
-    //     user_id = userAccount.user_id
-    //     req.log('link to existing user account:', userAccount.user_id, email)
-    //     await userAccountsModel.setLocalAuthId({
-    //       user_id: userAccount.user_id,
-    //       auth_local_id,
-    //     })
-    //   } else {
-    //     req.log('create new user account:', email)
-    //     const nameSplit = email.split('@')
-    //     const name = nameSplit[0]
-    //
-    //     user_id = await userController.create({
-    //       email,
-    //       firebase_id: null,
-    //     })
-    //     await userAccountsModel.setLocalAuthId({
-    //       user_id,
-    //       auth_local_id,
-    //     })
-    //   }
-    // }
-
-    // step 3
-    // const device_id = await deviceController.syncDevice(user_id, device, localize)
-
-    // step 4 => Authorize user. Create new token for this user
-    const tokens = await appController.authorizeAccount({ account_id: localAccount.account_id, app_id })
+    const authInfo = await appController.authorizeAccount({
+      req, account_id: localAccount.account_id, app_id, ip,
+    })
 
     res.send({
-      ...tokens,
+      ...authInfo,
       is_verified: localAccount.is_verified,
     })
+
+    await onLoginEnd(req, { user_id: authInfo.user_id })
   })
 
 export default app

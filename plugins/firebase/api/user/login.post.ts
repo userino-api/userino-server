@@ -1,7 +1,9 @@
 import express from 'express'
 import { body } from 'express-validator'
 import appController from '@controllers/appController'
+import expressUtils from '@libs/express/expressUtils'
 import middleWares from '@libs/middleWares'
+import onLoginEnd from '../../../../hooks/onLoginEnd'
 import firebaseController from '../../controllers/firebaseController'
 import firebaseAccountModel from '../../models/firebaseAccountModel'
 import firebaseUserModel from '../../models/firebaseUserModel'
@@ -30,6 +32,7 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
   async (req, res) => {
     const { accessToken, device, localize } = req.body
     const { app_id } = req.session
+    const ip = expressUtils.getClientIP(req) as string
 
     const { firebaseApp } = res.locals
     const authInstance = firebaseApp.auth()
@@ -66,19 +69,15 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
       })
     }
 
-    // step 3
-    // const device_id = await deviceController.syncDevice(user_id, device, localize)
-    // if (device_id) {
-    // // device info must be provided. We may start reject requests without device
-    //   req.log('Bug: client didnt provide device_id')
-    // }
-
-    // step 4 => Authorize user. Create new token for this user
-    const tokens = await appController.authorizeAccount({ app_id, account_id: account_id as string })
+    const authInfo = await appController.authorizeAccount({
+      req, app_id, account_id: account_id as string, ip,
+    })
 
     res.send({
-      ...tokens,
+      ...authInfo,
     })
+
+    await onLoginEnd(req, { user_id: authInfo.user_id })
   })
 
 export default app

@@ -1,5 +1,8 @@
 import express from 'express'
 import appController from '@controllers/appController'
+import expressUtils from '@libs/express/expressUtils'
+import onLoginEnd from '../../../../../hooks/onLoginEnd'
+import getDeviceInfoFromRequest from '../../../../../utils/getDeviceInfoFromRequest'
 import { RouterLocals } from '../router'
 
 const router = express.Router()
@@ -15,27 +18,23 @@ type RouteResponse = {
 
 router.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/verify',
   async (req, res) => {
-    const { app_id } = req.session
+    const { app_id, user_id } = req.session
     const { remoteSession } = res.locals
+    const ip = expressUtils.getClientIP(req) as string
 
     if (!remoteSession.is_approved) {
       return res.send({ is_approved: false })
     }
 
-    // step 3
-    // const device_id = await deviceController.syncDevice(user_id, device, localize)
-    // if (device_id) {
-    // // device info must be provided. We may start reject requests without device
-    //   req.log('Bug: client didnt provide device_id')
-    // }
-
-    // step 4 => Authorize user. Create new token for this user
-    const tokens = await appController.authorize({ user_id: remoteSession.user_id })
+    const deviceInfo = getDeviceInfoFromRequest(req)
+    const authInfo = await appController.authorize({ ...deviceInfo, user_id: remoteSession.user_id, ip })
 
     res.send({
       is_approved: true,
-      ...tokens,
+      ...authInfo,
     })
+
+    await onLoginEnd(req, { user_id })
   })
 
 export default router

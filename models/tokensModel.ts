@@ -5,8 +5,10 @@ import client from '../libs/pg'
 export interface Token {
   token: string
   user_id: string // uniq per app
+  device_type?: 'web' | 'ios' | 'android' | null
   device_id?: string | null
   session?: Record<string, any>
+  ip: string
 }
 
 async function get(token: string): Promise<Token> {
@@ -14,13 +16,15 @@ async function get(token: string): Promise<Token> {
   return _.get(result, 'rows[0]')
 }
 
-async function createToken(payload: Pick<Token, 'user_id' | 'device_id'>): Promise<string> {
-  const { user_id, device_id } = payload
+async function createToken(payload: Pick<Token, 'user_id' | 'device_id' | 'device_type' | 'ip' >): Promise<string> {
+  const {
+    user_id, device_id, ip, device_type,
+  } = payload
   const token = uuid()
 
   await client.query(
-    'INSERT INTO tokens (user_id, token, device_id) VALUES ($1, $2, $3)',
-    [user_id, token, device_id || null],
+    'INSERT INTO tokens (user_id, token, device_id, device_type, ip) VALUES ($1, $2, $3, $4, $5)',
+    [user_id, token, device_id || null, device_type, ip],
   )
 
   return token

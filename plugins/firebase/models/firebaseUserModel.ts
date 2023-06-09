@@ -10,6 +10,7 @@ async function create(params: Pick<FirebaseUser, 'firebase_id' | 'data'>) {
   await client.query(`
     INSERT INTO firebase.users (firebase_id, data)
     VALUES                     (    $1     ,    $2     )
+    ON CONFLICT DO NOTHING
   `, [firebase_id, data])
 }
 
