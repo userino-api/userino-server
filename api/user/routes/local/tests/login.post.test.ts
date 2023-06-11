@@ -1,7 +1,8 @@
 import { expect } from 'chai'
 import randomstring from 'randomstring'
-import redis from '@libs/redis'
+import redis, { redisClient } from '@libs/redis'
 import appUserModel from '@models/appUserModel'
+import deviceMobileModel from '@models/devices/deviceMobileModel'
 import tokensModel from '@models/tokensModel'
 import { TestUser } from '../../../../../test/helpers/methods/createUser'
 import testUtil from '../../../../../test/helpers/testUtil'
@@ -96,5 +97,52 @@ describe('/local/login [POST]', () => {
     }
 
     expect(statusLast).to.eq(429)
+  })
+
+  const device = {
+    id: 'BC13DEEA-C6AF-43A6-B61E-56B10AA9994F',
+    device_key: 'iPhone15,2',
+    brand: 'Apple',
+    device_name: 'iPhone 14 Pro',
+    model: 'iPhone 14 Pro',
+    manufacturer: 'Apple',
+    carrier: 'unknown',
+    system_name: 'iOS',
+    system_version: '16.4',
+    is_tablet: false,
+    installer: 'Other',
+  }
+
+  it('login with device', async () => {
+    await redisClient.flushDb()
+    const { status, body } = await agent.post('/local/login').send({
+      email,
+      password,
+      device,
+    }).set('device-type', 'ios')
+
+    expect(status).to.equals(200)
+    expect(body.token).to.be.a('string')
+
+    const token = await tokensModel.get(body.token)
+    // const employee = await employeesModel.get(token.user_id)
+
+    const userAccount = await appUserModel.get(token.user_id)
+    expect(userAccount?.account_id).to.eq(user.account_id)
+
+    const mobileInfo = await deviceMobileModel.get({
+      user_id: token.user_id,
+      id: device.id,
+    })
+    expect(mobileInfo).to.deep.include({
+      id: 'BC13DEEA-C6AF-43A6-B61E-56B10AA9994F',
+      user_id: token.user_id,
+      device_key: 'iPhone15,2',
+      device_name: 'iPhone 14 Pro',
+      model: 'iPhone 14 Pro',
+      manufacturer: 'Apple',
+      system_name: 'iOS',
+      system_version: '16.4',
+    })
   })
 })

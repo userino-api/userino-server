@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import invariant from 'invariant'
 import _ from 'lodash'
+import { validate } from 'uuid'
 import appUserModel from '@models/appUserModel'
 import tokensModel from '@models/tokensModel'
 import { RequestCore } from '../typings/express'
@@ -18,6 +19,9 @@ async function checkAuthCore(req: RequestCore, res: Response, next: NextFunction
 
   let splitRes = authorization.split(' ')
   const token: string = splitRes.length > 1 ? splitRes[1] : splitRes[0]
+  if (!validate(token)) {
+    return res.sendError(403, 'Token is invalid')
+  }
 
   const tokenObj = await tokensModel.get(token)
   if (_.isEmpty(tokenObj)) return res.sendError(401, 'Token is not authorized')
@@ -52,5 +56,6 @@ async function checkAuthCore(req: RequestCore, res: Response, next: NextFunction
 
 export default {
   checkAuthCore,
+  userAuthIsRequired: checkAuthCore,
   // createRoleCheck,
 }
