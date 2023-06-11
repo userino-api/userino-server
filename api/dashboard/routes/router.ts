@@ -1,7 +1,7 @@
 import express from 'express'
 import { plugins } from '../../../plugins/plugins'
-import healthGet from '../../shared/routes/health.get'
 import appRouter from './app/router'
+import healthGet from './health.get'
 // import userRouter from './user/router'
 
 const app = express.Router()

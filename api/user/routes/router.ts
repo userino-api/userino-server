@@ -1,9 +1,9 @@
 import express from 'express'
 import authMiddleWares from '@middlewares/authMiddleWares'
 import { plugins } from '../../../plugins/plugins'
-import healthGet from '../../shared/routes/health.get'
 import appMiddleWare from '../middlewares/appMiddleWare'
 import emailRouter from './email/router'
+import healthGet from './health.get'
 import localAuthRouter from './local/router'
 import postLogout from './logout.post'
 

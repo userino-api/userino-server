@@ -1,8 +1,8 @@
 import licenceExpress from '@octoguild-licence/express'
 import express from 'express'
 import config from '../../../config/settings'
-import healthGet from '../../shared/routes/health.get'
 import authRouter from './auth/router'
+import healthGet from './health.get'
 import userRouter from './user/router'
 
 if (config.licence) {
