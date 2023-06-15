@@ -1,7 +1,9 @@
 import express from 'express'
+import postMiddlewares from '@libs/express/expressPostMiddlewares'
 import authMiddleWares from '@middlewares/authMiddleWares'
 import { plugins } from '../../../plugins/plugins'
 import appMiddleWare from '../middlewares/appMiddleWare'
+import deviceRouter from './device/router'
 import emailRouter from './email/router'
 import healthGet from './health.get'
 import localAuthRouter from './local/router'
@@ -32,5 +34,9 @@ app.use(authMiddleWares.checkAuthCore)
 app.use([
   postLogout,
 ])
+
+app.use('/device', deviceRouter)
+
+app.use(postMiddlewares)
 
 export default app

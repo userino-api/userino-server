@@ -135,4 +135,64 @@ alter table firebase.fcm_tokens
 
 
 `)
+
+  await client.query(`
+  alter table devices.mobiles
+    add country varchar(2);
+
+alter table devices.mobiles
+    add language varchar(2);
+
+alter table devices.mobiles
+    add language_tag varchar(50);
+
+alter table devices.mobiles
+    add languages json;
+
+alter table devices.mobiles
+    add time_zone varchar(100);
+
+create table devices.user_mobiles
+(
+    user_id uuid
+);
+alter table devices.user_mobiles
+    add mobile_id varchar(50);
+
+alter table devices.user_mobiles
+    add created_at timestamptz default now();
+
+alter table devices.user_mobiles
+    add updated_at timestamptz default now();
+
+alter table devices.user_mobiles
+    add constraint user_mobiles_pk
+        primary key (user_id, mobile_id);
+
+alter table devices.user_mobiles
+    add constraint user_mobiles_app_users_id_fk
+        foreign key (user_id) references public.app_users;
+
+`)
+
+  await client.query(`
+  alter table devices.mobiles
+    drop column user_id;
+
+alter table devices.mobiles
+    add constraint mobiles_pk
+        primary key (id);
+
+alter table devices.browsers
+    add updated_at timestamptz default now();
+ 
+ alter table devices.mobiles
+    add brand varchar(100);
+    
+    
+    alter table devices.mobiles
+    drop column data;
+
+
+`)
 }

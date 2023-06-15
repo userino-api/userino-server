@@ -3,6 +3,7 @@ import randomstring from 'randomstring'
 import redis, { redisClient } from '@libs/redis'
 import appUserModel from '@models/appUserModel'
 import deviceMobileModel from '@models/devices/deviceMobileModel'
+import deviceUserMobileModel from '@models/devices/deviceUserMobileModel'
 import tokensModel from '@models/tokensModel'
 import { TestUser } from '../../../../../test/helpers/methods/createUser'
 import testUtil from '../../../../../test/helpers/testUtil'
@@ -130,9 +131,14 @@ describe('/local/login [POST]', () => {
     const userAccount = await appUserModel.get(token.user_id)
     expect(userAccount?.account_id).to.eq(user.account_id)
 
-    const mobileInfo = await deviceMobileModel.get({
+    await testUtil.wait(50) // device is saved after response
+
+    const devices = await deviceUserMobileModel.getUserDevices({ user_id: user.id })
+    expect(devices).to.have.lengthOf(1)
+
+    const mobileInfo = await deviceUserMobileModel.getUserDevice({
       user_id: token.user_id,
-      id: device.id,
+      mobile_id: device.id,
     })
     expect(mobileInfo).to.deep.include({
       id: 'BC13DEEA-C6AF-43A6-B61E-56B10AA9994F',

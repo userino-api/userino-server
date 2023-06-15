@@ -16,6 +16,7 @@ function getDeviceInfoFromRequest(req: express.Request) {
   return {
     device_type: type,
     device_id,
+    isMobile: type === 'ios' || type === 'android',
   }
 }
 export default getDeviceInfoFromRequest

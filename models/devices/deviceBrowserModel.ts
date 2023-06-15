@@ -1,15 +1,23 @@
 import db from '../../libs/pg'
 
-export interface UserBrowser {
+export interface UserBrowser extends ObjectTimestamps {
   user_id: string
   id: string
   language: string
   languages: string[]
   time_zone: string
-  created_at: string
 }
 
-const get = async ({ id, user_id }: Pick<UserBrowser, 'user_id' | 'id'>): Promise<UserBrowser | null> => {
+const get = async ({ id }: Pick<UserBrowser, 'id'>): Promise<UserBrowser | null> => {
+  // todo here we might receive array
+  const { rows = [] } = await db.query<UserBrowser>(
+    'SELECT * FROM devices.browsers WHERE id = $1 LIMIT 1',
+    [id],
+  )
+  return rows[0]
+}
+
+const getUserDevice = async ({ id, user_id }: Pick<UserBrowser, 'user_id' | 'id'>): Promise<UserBrowser | null> => {
   const { rows = [] } = await db.query<UserBrowser>(
     'SELECT * FROM devices.browsers WHERE user_id = $1 AND id = $2 LIMIT 1',
     [user_id, id],
@@ -30,14 +38,19 @@ async function create(params: Pick<UserBrowser, 'user_id' | 'id' | 'language' | 
   return rowCount
 }
 
-async function setLanguage(params: Pick<UserBrowser, 'user_id' | 'id' | 'language' | 'languages'>): Promise<number> {
+async function update(params: Pick<UserBrowser, 'id' | 'language' | 'languages' | 'time_zone'>): Promise<number> {
   const {
-    user_id, id, language, languages,
+    id, language, languages, time_zone,
   } = params
+
   const { rowCount } = await db.query(`
-    UPDATE devices.browsers 
-    SET language = $3, languages = $4
-    WHERE user_id = $1 AND id = $2`, [user_id, id, language, languages])
+    UPDATE devices.browsers
+    SET language = $2, 
+        time_zone = $3,
+        languages = $4,
+        updated_at = now()
+    SET id = $1
+  `, [id, language, time_zone, JSON.stringify(languages || [])])
 
   return rowCount
 }
@@ -45,5 +58,6 @@ async function setLanguage(params: Pick<UserBrowser, 'user_id' | 'id' | 'languag
 export default {
   create,
   get,
-  setLanguage,
+  getUserDevice,
+  update,
 }
