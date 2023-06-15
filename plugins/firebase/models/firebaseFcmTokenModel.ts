@@ -37,8 +37,19 @@ async function getByUser(params: Pick<FirebaseFcmToken, 'user_id'>): Promise<Fir
   return rows
 }
 
+async function dropToken(params: Pick<FirebaseFcmToken, 'token'>): Promise<FirebaseFcmToken[]> {
+  const { token } = params
+  const { rows } = await client.query<FirebaseFcmToken>(`
+    DELETE FROM firebase.fcm_tokens
+    WHERE token = $1
+  `, [token])
+
+  return rows
+}
+
 export default {
   create,
   update,
   getByUser,
+  dropToken,
 }

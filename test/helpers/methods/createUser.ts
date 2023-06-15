@@ -3,6 +3,8 @@ import accountLocalModel from '@models/accountLocalModel'
 import accountModel from '@models/accountModel'
 import appUserModel from '@models/appUserModel'
 import appsModel from '@models/appsModel'
+import deviceMobileModel from '@models/devices/deviceMobileModel'
+import deviceUserMobileModel from '@models/devices/deviceUserMobileModel'
 import tokensModel from '@models/tokensModel'
 import userContactsModel from '@models/userContactsModel'
 import usersModel from '@models/usersModel'
@@ -55,6 +57,21 @@ export class TestUser {
       password,
     }
   }
+
+  async setContacts() {
+    await userContactsModel.create({
+      account_id: this.account_id,
+      email: this.email,
+      phone_number: null,
+    })
+  }
+
+  async createDevice() {
+    const id = uuid()
+    await deviceMobileModel.create({ id })
+    await deviceUserMobileModel.create({ mobile_id: id, user_id: this.user_id })
+    return id
+  }
 }
 
 export async function createUser(params?: { email?: string }): Promise<TestUser> {
@@ -69,7 +86,7 @@ export async function createUser(params?: { email?: string }): Promise<TestUser>
   })
   await usersModel.create({ id: account_id, name })
   await userContactsModel.create({ account_id, email })
-  const token = await tokensModel.createToken({ user_id })
+  const token = await tokensModel.createToken({ user_id, ip: 'test' })
 
   const testUser = new TestUser({
     account_id, user_id, token, email,

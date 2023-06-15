@@ -1,3 +1,4 @@
+import adminRouter from './api/admin/router'
 import dashboardRouter from './api/dashboard/router'
 import router from './api/user/router'
 
@@ -6,7 +7,7 @@ const FirebasePlugin = {
   route: '/firebase',
   routers: {
     user: router,
-    admin: null,
+    admin: adminRouter,
     dashboard: dashboardRouter,
   },
 }
