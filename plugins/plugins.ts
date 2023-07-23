@@ -1,10 +1,15 @@
 import { Router } from 'express'
 import FirebasePlugin from './firebase'
 import firebasePlugin from './firebase/plugin'
+import mediaPlugin from './media/plugin'
 import remoteAuthPlugin from './remote-auth/plugin'
 
 // new style
-export const plugins = [firebasePlugin, remoteAuthPlugin]
+export const plugins = [
+  firebasePlugin,
+  remoteAuthPlugin,
+  mediaPlugin,
+]
 
 /**
  * @NOTE: This functionality must be automated in future.

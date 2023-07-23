@@ -19,6 +19,13 @@ const coreEventList = {
     await eventController.sendEvent({ event, data })
   },
 
+  async userUpdated(data: {
+    id: string
+  }) {
+    const event = keys.USER_UPDATED
+    await eventController.sendEvent({ event, data })
+  },
+
   async userDeleted(data: {
     id: string
   }) {

@@ -8,6 +8,7 @@ export interface User {
   name?: string | null
   first_name?: string | null
   last_name?: string | null
+  username?: string | null
   created_at: string
 }
 
@@ -17,14 +18,25 @@ const get = async (user_id: string): Promise<User | null> => {
   return rows[0]
 }
 
-async function create(params: Pick<User, 'id' | 'name' | 'first_name' | 'last_name' | 'avatar_url'>): Promise<number> {
+async function getByUserName(userName: string): Promise<User | null>  {
+  if (userName.includes('@')) {
+    userName = userName.replace(/@/, '')
+  }
+  userName = userName.toLowerCase()
+
+  const { rows = [] } = await db.query('SELECT * FROM users WHERE username = $1 LIMIT 1', [ userName ])
+
+  return rows[0]
+}
+
+async function create(params: Pick<User, 'id' | 'name' | 'first_name' | 'last_name' | 'avatar_url' | 'username'>): Promise<number> {
   const {
-    id, name, first_name, last_name, avatar_url,
+    id, name, first_name, last_name, avatar_url, username,
   } = params
   const { rowCount } = await db.query(`
-      INSERT INTO users(id, name, first_name, last_name, avatar_url)
-      VALUES           ($1,  $2 ,     $3    ,     $4   ,    $5     ) 
-  `, [  id, name, first_name, last_name, avatar_url ])
+      INSERT INTO users(id, name, first_name, last_name, avatar_url, username)
+      VALUES           ($1,  $2 ,     $3    ,     $4   ,    $5     ,    $6   ) 
+  `, [id, name, first_name, last_name, avatar_url, username])
 
   return rowCount
 }
@@ -36,8 +48,21 @@ async function getArray(user_ids: string[]): Promise<User[]> {
   return rows
 }
 
+async function setUserName({ id, username }: { id: string; username: string}) {
+  username = username.toLowerCase()
+  const { rowCount } = await db.query(`
+    UPDATE users
+    SET username = $2
+    WHERE id = $1 
+  `, [id, username ])
+
+  return rowCount
+}
+
 export default {
   create,
   get,
+  getByUserName,
   getArray,
+  setUserName,
 }

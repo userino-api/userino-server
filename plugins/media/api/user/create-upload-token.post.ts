@@ -18,6 +18,7 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
     const data = await mediaClient.client.createClientToken()
     return res.send(data)
   } catch (e) {
+    // @ts-ignore
     const { status, data } = e?.response
     return res.status(status).send(data)
   }

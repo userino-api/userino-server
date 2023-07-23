@@ -32,6 +32,13 @@ const create = async (userData: UserCreatePayload) => {
   await coreEventList.userCreated({ id: account_id })
 }
 
+async function setUserName({ account_id, username }: { account_id: string; username: string }) {
+  const changed = await usersModel.setUserName({ id: account_id, username })
+  await coreEventList.userUpdated({ id: account_id })
+  return changed
+}
+
 export default {
   create,
+  setUserName,
 }
