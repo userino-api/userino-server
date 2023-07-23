@@ -66,6 +66,7 @@ services:
 - `ADMIN_PORT` - port for admin api server. Default: 7303
 - `MIGRATIONS_DISABLED` - migrations will not be run during server startup. Migrations are enabled by default.
 - `APP_PRIMARY_DISABLED` - disallow primary app
+- `MEDIA_ADMIN_URL` - set url for media server. Default: `http://localhost:4503`
 
 # Links
 

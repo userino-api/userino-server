@@ -8,15 +8,17 @@ export class ApiClient {
   apiClient: AxiosInstance
 
   constructor(params?: { url?: string }) {
-    const { url = 'http://localhost:4503/admin-api' } = params || {}
+    const { url = process.env.MEDIA_ADMIN_URL || 'http://localhost:4503' } = params || {}
     this.apiClient = axios.create({
       baseURL: url,
     })
   }
 
   setCredentials({ client_id, client_secret }: { client_id: string; client_secret: string }) {
-    this.apiClient.defaults.headers.common['client-id'] = client_id
-    this.apiClient.defaults.headers.common['secret-key'] = client_secret
+    let authBuffer = Buffer.from(`${client_id}:${client_secret}`)
+    const authorization = authBuffer.toString('base64')
+
+    this.apiClient.defaults.headers.common['authorization'] = authorization
   }
 }
 
