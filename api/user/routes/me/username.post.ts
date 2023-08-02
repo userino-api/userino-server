@@ -10,18 +10,21 @@ type RouteBody = { username: string }
 
 const router = Router()
 
-router.post<{}, {}, RouteBody>('/username', body('username').isString().isLength({ min: 3, max: 50 }), checkValidation, async (req, res) => {
-  const { username } = req.body
-  const { account_id } = req.session
+router.post<{}, {}, RouteBody>('/username',
+  body('username').isString().isLength({ min: 3, max: 50 }).toLowerCase(),
+  checkValidation,
+  async (req, res) => {
+    const { username } = req.body
+    const { account_id, appUser } = req.session
 
-  const userExists = await usersModel.getByUserName(username)
-  if (userExists) {
-    return res.sendError(new LogicError({ httpStatus: 409, message: 'Username is already taken', errorCode: userErrorCodes.usernameIsTaken }))
-  }
+    const userExists = await usersModel.getByUserName(username)
+    if (userExists) {
+      return res.sendError(new LogicError({ httpStatus: 409, message: 'Username is already taken', errorCode: userErrorCodes.usernameIsTaken }))
+    }
 
-  const changed = await userController.setUserName({ account_id, username })
+    const changed = await userController.setUserName({ account_id, username, id: appUser.id })
 
-  res.send({ changed })
-})
+    res.send({ changed })
+  })
 
 export default router

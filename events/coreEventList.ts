@@ -20,7 +20,8 @@ const coreEventList = {
   },
 
   async userUpdated(data: {
-    id: string
+    app_user_id: string
+    account_id: string
   }) {
     const event = keys.USER_UPDATED
     await eventController.sendEvent({ event, data })

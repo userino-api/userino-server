@@ -59,10 +59,21 @@ async function setUserName({ id, username }: { id: string; username: string}) {
   return rowCount
 }
 
+async function setName({ id, name }: { id: string; name: string}) {
+  const { rowCount } = await db.query(`
+    UPDATE users
+    SET name = $2
+    WHERE id = $1 
+  `, [id, name ])
+
+  return rowCount
+}
+
 export default {
   create,
   get,
   getByUserName,
   getArray,
   setUserName,
+  setName,
 }

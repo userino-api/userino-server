@@ -78,6 +78,7 @@
     "@babel/core": "~7.22.5",
     "@babel/register": "~7.22.5",
     "@babel/runtime": "~7.22.5",
+    "@faker-js/faker": "^8.0.2",
     "@reaction-eslint/eslint-config-server": "^0.5.2",
     "@types/bcrypt": "^5.0.0",
     "@types/chai": "^4.3.5",

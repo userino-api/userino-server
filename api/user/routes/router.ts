@@ -9,6 +9,7 @@ import healthGet from './health.get'
 import localAuthRouter from './local/router'
 import postLogout from './logout.post'
 import meRouter from './me/router'
+import userRouter from './user/router'
 
 const app = express.Router()
 app.use(healthGet)
@@ -33,6 +34,8 @@ app.use(localAuthRouter)
 app.use(authMiddleWares.checkAuthCore)
 // app.use(saveOnline)
 app.use('/me', meRouter)
+app.use('/user', userRouter)
+
 app.use([
   postLogout,
 ])

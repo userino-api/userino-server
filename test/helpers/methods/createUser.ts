@@ -1,4 +1,4 @@
-import randomstring from 'randomstring'
+import { faker } from '@faker-js/faker'
 import { v4 as uuid } from 'uuid'
 import accountLocalModel from '@models/accountLocalModel'
 import accountModel from '@models/accountModel'
@@ -23,12 +23,15 @@ export class TestUser {
 
   username: string
 
+  avatar_url: string
+
   constructor(params: {
     account_id: string
     user_id: string
     token: string
     email: string
     username: string
+    avatar_url: string
 }) {
     this.account_id = params.account_id
     this.user_id = params.user_id
@@ -36,10 +39,11 @@ export class TestUser {
     this.token = params.token
     this.email = params.email
     this.username = params.username
+    this.avatar_url = params.avatar_url
   }
 
   async fetch() {
-    const user = await appUserModel.get(this.user_id)
+    const user = await appUserModel.getWithProfile(this.user_id)
 
     return user
   }
@@ -47,8 +51,8 @@ export class TestUser {
   // todo not sure it should be here
   async createLocalAuth(params?: { email?: string; password?: string}) {
     let { email, password } = params || {}
-    if (!email) email = `${uuid()}@mail.com`
-    if (!password) password = uuid()
+    if (!email) email = faker.internet.email()
+    if (!password) password = faker.internet.password()
 
     const auth_local_id = await accountLocalModel.create({
       email,
@@ -85,21 +89,24 @@ export class TestUser {
 
 export async function createUser(params?: { email?: string }): Promise<TestUser> {
   let { email } = params || {}
-  if (!email) email = `${uuid()}@mail.com`
+  if (!email) email = faker.internet.email()
 
-  let name = uuid()
-  let username = randomstring.generate({ charset: 'alphabetic', length: 10, capitalization: 'lowercase' })
+  let name = faker.person.fullName()
+  let username = faker.internet.userName()
+  const avatar_url = faker.internet.avatar()
   const app = await appsModel.getPrimaryApp()
   const account_id = await accountModel.create({ email })
   const user_id = await appUserModel.create({
     account_id, app_id: app.id,
   })
-  await usersModel.create({ id: account_id, name, username })
+  await usersModel.create({
+    id: account_id, name, username, avatar_url,
+  })
   await userContactsModel.create({ account_id, email })
   const token = await tokensModel.createToken({ user_id, ip: 'test' })
 
   const testUser = new TestUser({
-    account_id, user_id, token, email, username,
+    account_id, user_id, token, email, username, avatar_url,
   })
 
   return testUser

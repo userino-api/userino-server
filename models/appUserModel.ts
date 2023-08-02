@@ -1,7 +1,7 @@
 import invariant from 'invariant'
-import _ from 'lodash'
 import { v4 as uuid } from 'uuid'
 import db from '../libs/pg'
+import { User } from './usersModel'
 
 export interface AppUser {
   account_id: string
@@ -31,8 +31,18 @@ async function create(
 }
 
 async function get(id: string): Promise<AppUser | null> {
-  const result = await db.query('SELECT * FROM app_users WHERE id = $1', [id])
-  return _.get(result, 'rows[0]')
+  const { rows } = await db.query('SELECT * FROM app_users WHERE id = $1', [id])
+  return rows[0]
+}
+
+async function getWithProfile(id: string): Promise<AppUser & User> {
+  const { rows } = await db.query(`
+    SELECT * FROM app_users 
+    LEFT JOIN users ON app_users.account_id = users.id
+    WHERE app_users.id = $1
+  `, [id])
+
+  return rows[0]
 }
 
 async function getByAccountId({ account_id, app_id }: Pick<AppUser, 'account_id' | 'app_id'>): Promise<AppUser | null> {
@@ -72,6 +82,7 @@ async function deleteUser(id: string): Promise<number> {
 export default {
   create,
   get,
+  getWithProfile,
   getByAccountId,
   getAllByAccountId,
   setAccountId,
