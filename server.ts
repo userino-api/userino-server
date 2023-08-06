@@ -5,15 +5,19 @@ import userRouter from './api/user/router'
 import config from './config/settings'
 import createServer from './libs/express/createServer'
 import './migrations/.config/auto'
+import { applyPostMiddleWares } from './packages/zvs001-express'
 
 const userServer = createServer()
 userServer.use(userRouter)
+applyPostMiddleWares(userRouter)
 
 const adminServer = createServer()
 adminServer.use(adminRouter)
+applyPostMiddleWares(adminRouter)
 
 const dashboardServer = createServer()
 dashboardServer.use(dashboardRouter)
+applyPostMiddleWares(dashboardServer)
 
 // 404 Not found
 // userServer.all('*', (req, res) => {

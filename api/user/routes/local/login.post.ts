@@ -1,8 +1,8 @@
+import { getClientIP } from '@zvs001/express'
 import bcrypt from 'bcrypt'
 import express from 'express'
 import { body } from 'express-validator'
 import appController from '@controllers/appController'
-import expressUtils from '@libs/express/expressUtils'
 import middleWares from '@libs/middleWares'
 import createCustomIpRateLimiter from '@middlewares/rateLimits/createCustomIpRateLimiter'
 import accountLocalModel from '@models/accountLocalModel'
@@ -19,7 +19,7 @@ app.post('/login',
   middleWares.checkValidation,
   async (req, res) => {
     const { app_id } = req.session
-    const ip = expressUtils.getClientIP(req) as string
+    const ip = getClientIP(req) as string
     let {
       email, password, device,
     } = req.body

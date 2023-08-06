@@ -1,6 +1,6 @@
+import { getClientIP } from '@zvs001/express'
 import express from 'express'
 import appController from '@controllers/appController'
-import expressUtils from '@libs/express/expressUtils'
 import onLoginEnd from '../../../../../hooks/onLoginEnd'
 import getDeviceInfoFromRequest from '../../../../../utils/getDeviceInfoFromRequest'
 import { RouterLocals } from '../router'
@@ -20,7 +20,7 @@ router.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>
   async (req, res) => {
     const { app_id, user_id } = req.session
     const { remoteSession } = res.locals
-    const ip = expressUtils.getClientIP(req) as string
+    const ip = getClientIP(req) as string
 
     if (!remoteSession.is_approved) {
       return res.send({ is_approved: false })

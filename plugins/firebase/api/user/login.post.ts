@@ -1,7 +1,7 @@
+import { getClientIP } from '@zvs001/express'
 import express from 'express'
 import { body } from 'express-validator'
 import appController from '@controllers/appController'
-import expressUtils from '@libs/express/expressUtils'
 import middleWares from '@libs/middleWares'
 import onLoginEnd from '../../../../hooks/onLoginEnd'
 import firebaseController from '../../controllers/firebaseController'
@@ -32,7 +32,7 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
   async (req, res) => {
     const { accessToken, device, localize } = req.body
     const { app_id } = req.session
-    const ip = expressUtils.getClientIP(req) as string
+    const ip = getClientIP(req) as string
 
     const { firebaseApp } = res.locals
     const authInstance = firebaseApp.auth()

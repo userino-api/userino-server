@@ -1,18 +1,25 @@
-import express from 'express'
-import './injectExpressMethods'
-import ipRateLimiter from '../../middlewares/rateLimits/ipRateLimiter'
-import expressGlobalMiddleWares from './expressGlobalMiddlewares'
+import { createServer, createIPRateLimitMiddleWare } from '@zvs001/express'
+import bodyParser from 'body-parser'
+import redisClient from '@libs/redis'
+import requestLoggerMiddleware from '../expressRequestLogger'
 
-function createServer() {
-  const app = express()
+const isTest = process.env.NODE_ENV === 'test'
 
-  app.set('trust proxy', 1) // it changes proxy x-forwarded-for ip as client ip
-  app.use(expressGlobalMiddleWares)
+function createAppServer() {
+  const app = createServer()
+
+  app.use(bodyParser.json())
+
+  if (!isTest) app.use(requestLoggerMiddleware())
+
   app.use([
-    ipRateLimiter,
+    createIPRateLimitMiddleWare({
+      serviceName: 'userino',
+      redisClient,
+    }),
   ])
 
   return app
 }
 
-export default createServer
+export default createAppServer
