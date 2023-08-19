@@ -1,10 +1,8 @@
-import express from 'express'
 import request, { SuperTest, Test } from 'supertest'
-import expressGlobalMiddlewares from '../../../libs/express/expressGlobalMiddlewares'
+import createServer from '@libs/express/createServer'
 import adminRouter from '../router'
 
-const server = express()
-server.use(expressGlobalMiddlewares)
+const server = createServer()
 server.use(adminRouter)
 
 const testServer: SuperTest<Test> = request(server)
