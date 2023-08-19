@@ -1,3 +1,4 @@
+import { applyPostMiddleWares } from '@zvs001/express'
 import serviceStartup from 'service-startup'
 import adminRouter from './api/admin/router'
 import dashboardRouter from './api/dashboard/router'
@@ -5,7 +6,6 @@ import userRouter from './api/user/router'
 import config from './config/settings'
 import createServer from './libs/express/createServer'
 import './migrations/.config/auto'
-import { applyPostMiddleWares } from './packages/zvs001-express'
 
 const userServer = createServer()
 userServer.use(userRouter)
