@@ -7,7 +7,7 @@ import accountLocalModel from '@models/accountLocalModel'
 const app = express.Router()
 
 app.post('/reset',
-  body('email').isEmail(),
+  body('email').isEmail().toLowerCase(),
   middleWares.checkValidation,
   async (req, res) => {
     let { email } = req.body

@@ -54,7 +54,7 @@ async function getByAccount({ account_id }: Pick<AccountLocal, 'account_id'>): P
 // }
 
 async function getByEmail({ email }: Pick<AccountLocal, 'email'>): Promise<AccountLocal | null> {
-  const { rows = [] } = await client.query('SELECT * FROM accounts_local WHERE email = $1', [email])
+  const { rows = [] } = await client.query('SELECT * FROM accounts_local WHERE email = $1', [email.toLowerCase()])
   return rows[0]
 }
 

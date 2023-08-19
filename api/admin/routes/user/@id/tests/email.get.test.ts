@@ -16,7 +16,7 @@ describe('/admin:/user/:id/email [GET]', () => {
 
     expect(status).to.equals(200)
     expect(body).to.deep.include({
-      email: user.email,
+      email: user.email.toLowerCase(),
     })
   })
 })
