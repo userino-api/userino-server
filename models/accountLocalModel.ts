@@ -25,7 +25,7 @@ async function create(
   await client.query(`
     INSERT INTO accounts_local (id, account_id, email, password)
     VALUES                     ($1,     $2    ,  $3  ,    $4   )
-  `, [id, account_id, email, hash])
+  `, [id, account_id, email.toLowerCase(), hash])
 
   return id
 }

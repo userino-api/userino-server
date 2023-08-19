@@ -14,7 +14,7 @@ app.post('/login',
   createCustomIpRateLimiter({
     key: 'local-login-anti-brute', max: 10, timeWindowSeconds: 15 * 60, skipFailedRequests: false,
   }),
-  body('email').isEmail(),
+  body('email').isEmail().toLowerCase(),
   body('password').isString().isLength({ min: 6 }),
   middleWares.checkValidation,
   async (req, res) => {

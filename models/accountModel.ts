@@ -16,6 +16,7 @@ async function create(params: Pick<Account, 'phone_number' | 'email'>): Promise<
     email, phone_number,
   } = params
   const id = uuid()
+  email = email?.toLowerCase()
 
   await client.query(`
     INSERT INTO accounts (id, email, phone_number)

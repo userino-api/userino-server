@@ -25,7 +25,7 @@ async function create(params:
   const { rowCount } = await db.query(`
       INSERT INTO user_contacts(account_id, email, phone_number, is_email_verified)
       VALUES                   (    $1    ,  $2  ,      $3     ,        $4        ) 
-  `, [account_id, email, phone_number, is_email_verified])
+  `, [account_id, email?.toLowerCase(), phone_number, is_email_verified])
 
   return rowCount
 }

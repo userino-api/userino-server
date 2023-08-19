@@ -13,7 +13,7 @@ app.post('/signin',
   createCustomIpRateLimiter({
     key: 'local-signin-anti-brute', max: 3, timeWindowSeconds: 60 * 60, skipFailedRequests: true,
   }),
-  body('email').isEmail(),
+  body('email').isEmail().toLowerCase(),
   body('password').isString().isLength({ min: 6 }),
   middleWares.checkValidation,
   async (req, res) => {
