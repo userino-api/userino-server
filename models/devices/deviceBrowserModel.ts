@@ -49,7 +49,7 @@ async function update(params: Pick<UserBrowser, 'id' | 'language' | 'languages' 
         time_zone = $3,
         languages = $4,
         updated_at = now()
-    SET id = $1
+    WHERE id = $1
   `, [id, language, time_zone, JSON.stringify(languages || [])])
 
   return rowCount
