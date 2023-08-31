@@ -5,6 +5,7 @@ import appMiddleWare from '../middlewares/appMiddleWare'
 import deviceRouter from './device/router'
 import emailRouter from './email/router'
 import healthGet from './health.get'
+import issueRouter from './issue/router'
 import localAuthRouter from './local/router'
 import postLogout from './logout.post'
 import meRouter from './me/router'
@@ -34,6 +35,7 @@ app.use(authMiddleWares.checkAuthCore)
 // app.use(saveOnline)
 app.use('/me', meRouter)
 app.use('/user', userRouter)
+app.use('/issue', issueRouter)
 
 app.use([
   postLogout,
