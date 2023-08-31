@@ -6,15 +6,9 @@
     "mocha": true
   },
   "extends": [
-    "@reaction-eslint/server"
+    "@octoguild/server"
   ],
   "rules": {
-    // own rules
-//    "filenames/match-regex": [
-//      "error",
-//      "^(@|[\\w-]+)(\\.(post|get|delete|development|production|local))?(\\.test|\\.d)?$"
-//    ],
-
     // tmp. todo. Problem with models
     "function-paren-newline": "off",
 
@@ -41,12 +35,6 @@
         "@typescript-eslint/no-unsafe-argument": "off",
         "@typescript-eslint/no-unsafe-member-access" : "off",
         "@typescript-eslint/no-unsafe-assignment": "off"
-      }
-    }, {
-      "files": ["models/*"],
-      "rules": {
-        "no-multi-spaces": "off",
-        "array-bracket-spacing": "off"
       }
     }
   ],

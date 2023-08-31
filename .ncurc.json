@@ -1,9 +1,6 @@
 {
   "reject": [
-    "typescript",
-    "express-request-id",
     "@types/node",
-    "axios",
     "eslint"
   ]
 }
