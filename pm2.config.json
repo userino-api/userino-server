@@ -1,7 +1,7 @@
 {
   "apps" : [
     {
-      "name"        : "auth-server",
+      "name"        : "userino-server",
       "script"      : "./index.js",
       "instances"   : 1,
       "restart_delay": 4001
