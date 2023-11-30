@@ -1,7 +1,7 @@
+import logger from '@zvs001/express/src/lib/logger'
 import pg from 'pg'
 import pgErrorLogger from 'pg-error-logger'
 import config from '../config/settings'
-import logger from './logger'
 
 const { pgConnectionString } = config
 
