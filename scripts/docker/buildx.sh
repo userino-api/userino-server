@@ -16,5 +16,5 @@ docker context create buildx
 
 echo '===     Build analyst-layer image     ===='
 IMAGE_NAME="zvsx001/userino-server"
-docker buildx create --platform "$PLATFORMS" --append --use buildx --name analytic-layer;
+docker buildx create --platform "$PLATFORMS" --append --use buildx --name userino-server;
 docker buildx build --no-cache --platform "$PLATFORMS" . --push -t "$IMAGE_NAME:$VERSION" -t "$IMAGE_NAME:latest";
