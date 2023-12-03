@@ -19,7 +19,8 @@ function createAppServer() {
       getUserInfo(req, res) {
         if (req.session && req.session.user_id) {
           const { session } = req
-          return `[id:${session.user_id}|n:${session.appUser?.name}]`
+          // we don't have name in session for now
+          return `[user_id:${session.user_id}]`
         }
         return ''
       },

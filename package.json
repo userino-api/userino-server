@@ -25,7 +25,7 @@
     "@migramon/migrate": "^0.0.6",
     "@migramon/postgres-plugin": "^0.1.0",
     "@octoguild-licence/client": "^1.0.0",
-    "@octoguild-licence/express": "^1.0.0",
+    "@octoguild-licence/express": "^1.0.1",
     "@octoguild/eslint-config-server": "^0.2.0",
     "@slack/webhook": "^7.0.1",
     "@zvs001/babel-config": "^3.0.0",
@@ -69,9 +69,9 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "~7.23.3",
+    "@babel/core": "~7.23.5",
     "@babel/register": "~7.22.15",
-    "@babel/runtime": "~7.23.4",
+    "@babel/runtime": "~7.23.5",
     "@faker-js/faker": "^8.3.1",
     "@types/bcrypt": "^5.0.2",
     "@types/chai": "^4.3.11",
