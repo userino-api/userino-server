@@ -8,35 +8,37 @@ export interface User {
   name?: string | null
   first_name?: string | null
   last_name?: string | null
+  type?: 'user' | 'organisation'
   username?: string | null
   created_at: string
 }
 
 const get = async (user_id: string): Promise<User | null> => {
-  const { rows = [] } = await db.query('SELECT * FROM users WHERE id = $1 LIMIT 1', [ user_id ])
+  const { rows = [] } = await db.query('SELECT * FROM users WHERE id = $1 LIMIT 1', [user_id])
 
   return rows[0]
 }
 
-async function getByUserName(userName: string): Promise<User | null>  {
+async function getByUserName(userName: string): Promise<User | null> {
   if (userName.includes('@')) {
     userName = userName.replace(/@/, '')
   }
   userName = userName.toLowerCase()
 
-  const { rows = [] } = await db.query('SELECT * FROM users WHERE username = $1 LIMIT 1', [ userName ])
+  const { rows = [] } = await db.query('SELECT * FROM users WHERE username = $1 LIMIT 1', [userName])
 
   return rows[0]
 }
 
-async function create(params: Pick<User, 'id' | 'name' | 'first_name' | 'last_name' | 'avatar_url' | 'username'>): Promise<number> {
+async function create(params: Pick<User, 'id' | 'name' | 'first_name' | 'last_name' | 'avatar_url' | 'username' | 'type'>): Promise<number> {
   const {
-    id, name, first_name, last_name, avatar_url, username,
+    id, name, first_name, last_name, avatar_url, username, type = 'user',
   } = params
+
   const { rowCount } = await db.query(`
-      INSERT INTO users(id, name, first_name, last_name, avatar_url, username)
-      VALUES           ($1,  $2 ,     $3    ,     $4   ,    $5     ,    $6   ) 
-  `, [id, name, first_name, last_name, avatar_url, username])
+      INSERT INTO users(id, name, first_name, last_name, avatar_url, username, type)
+      VALUES           ($1,  $2 ,     $3    ,     $4   ,    $5     ,    $6   ,  $7) 
+  `, [id, name, first_name, last_name, avatar_url, username, type])
 
   return rowCount
 }
@@ -54,7 +56,7 @@ async function setUserName({ id, username }: { id: string; username: string}) {
     UPDATE users
     SET username = $2
     WHERE id = $1 
-  `, [id, username ])
+  `, [id, username])
 
   return rowCount
 }
@@ -64,7 +66,7 @@ async function setName({ id, name }: { id: string; name: string}) {
     UPDATE users
     SET name = $2
     WHERE id = $1 
-  `, [id, name ])
+  `, [id, name])
 
   return rowCount
 }

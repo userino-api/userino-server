@@ -8,7 +8,7 @@ import deviceMobileModel from '@models/devices/deviceMobileModel'
 import deviceUserMobileModel from '@models/devices/deviceUserMobileModel'
 import tokensModel from '@models/tokensModel'
 import userContactsModel from '@models/userContactsModel'
-import usersModel from '@models/usersModel'
+import usersModel, { User } from '@models/usersModel'
 
 export class TestUser {
   account_id: string
@@ -87,8 +87,8 @@ export class TestUser {
   }
 }
 
-export async function createUser(params?: { email?: string }): Promise<TestUser> {
-  let { email } = params || {}
+export async function createUser(params?: { email?: string; type?: User['type'] }): Promise<TestUser> {
+  let { email, type } = params || {}
   if (!email) email = faker.internet.email()
 
   let name = faker.person.fullName()
@@ -100,7 +100,7 @@ export async function createUser(params?: { email?: string }): Promise<TestUser>
     account_id, app_id: app.id,
   })
   await usersModel.create({
-    id: account_id, name, username, avatar_url,
+    id: account_id, name, username, avatar_url, type,
   })
   await userContactsModel.create({ account_id, email })
   const token = await tokensModel.createToken({ user_id, ip: 'test' })

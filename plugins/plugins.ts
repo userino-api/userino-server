@@ -2,6 +2,7 @@ import { Router } from 'express'
 import FirebasePlugin from './firebase'
 import firebasePlugin from './firebase/plugin'
 import mediaPlugin from './media/plugin'
+import organisationsPlugin from './organisations/plugin'
 import remoteAuthPlugin from './remote-auth/plugin'
 
 // new style
@@ -9,6 +10,7 @@ export const plugins = [
   firebasePlugin,
   remoteAuthPlugin,
   mediaPlugin,
+  organisationsPlugin,
 ]
 
 /**

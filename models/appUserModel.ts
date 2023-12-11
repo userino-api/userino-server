@@ -1,4 +1,6 @@
 import invariant from 'invariant'
+import _ from 'lodash'
+import format from 'pg-format'
 import { v4 as uuid } from 'uuid'
 import db from '../libs/pg'
 import { User } from './usersModel'
@@ -9,6 +11,8 @@ export interface AppUser {
   app_id: string
   created_at: string
 }
+
+export interface UserFull extends User, AppUser{ }
 
 export type UserAccountCreatePayload = Pick<AppUser,
   'account_id' | 'app_id'
@@ -24,8 +28,8 @@ async function create(
 
   await db.query(`
     INSERT INTO app_users (id, app_id, account_id)
-    VALUES                ($1,   $2  ,     $3    )
-`, [ id, app_id, account_id])
+    VALUES                           ($1,     $2   ,        $3      )
+`, [id, app_id, account_id])
 
   return id
 }
@@ -33,6 +37,19 @@ async function create(
 async function get(id: string): Promise<AppUser | null> {
   const { rows } = await db.query('SELECT * FROM app_users WHERE id = $1', [id])
   return rows[0]
+}
+
+async function getMany(ids: string[]): Promise<UserFull[]> {
+  if (_.isEmpty(ids)) return []
+
+  const sql = format(`
+    SELECT * FROM app_users 
+    LEFT JOIN users ON app_users.account_id = users.id
+    WHERE app_users.id IN (%L)
+  `, ids)
+  const { rows } = await db.query(sql)
+
+  return rows
 }
 
 async function getWithProfile(id: string): Promise<AppUser & User> {
@@ -84,6 +101,7 @@ export default {
   get,
   getWithProfile,
   getByAccountId,
+  getMany,
   getAllByAccountId,
   setAccountId,
   delete: deleteUser,
