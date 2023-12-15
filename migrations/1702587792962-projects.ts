@@ -9,6 +9,11 @@ create table public.projects
     created_at timestamptz default now()
 );
 
+alter table public.projects
+    add constraint projects_pk
+        primary key (id);
+
+
 alter table public.apps
     add project_id uuid;
   `)
@@ -54,8 +59,8 @@ alter table devices.user_mobiles
 `)
 
   await client.query(`
-    DELETE FROM public.app_users WHERE id = '64e7ce82-db62-4cce-b745-dd62e1d06ea9'
-    DELETE FROM public.app_users WHERE id = 'c954fa49-51f0-4c67-8988-9d6ceb09eda1'
+    DELETE FROM public.app_users WHERE id = '64e7ce82-db62-4cce-b745-dd62e1d06ea9';
+    DELETE FROM public.app_users WHERE id = 'c954fa49-51f0-4c67-8988-9d6ceb09eda1';
     
     
 update accounts
@@ -81,9 +86,6 @@ set project_id = (select project_id from accounts where accounts.id = firebase.a
 alter table firebase.app_configs
     rename column app_id to project_id;
 
-alter table public.projects
-    add constraint projects_pk
-        primary key (id);
 
 alter table firebase.app_configs
     add constraint app_configs_projects_id_fk

@@ -8,7 +8,7 @@ orbs:
 parameters:
   docker-image:
     type: string
-    default: "node:16"
+    default: "node:18"
   workingdir:
     type: string
     default: "~/project"
@@ -20,7 +20,7 @@ commands:
           name: Setup Environment Variables
           command: |
             echo "export AWS_DEFAULT_REGION=us-east-2" >> $BASH_ENV;
-            echo "export PATH=$(npm bin):$PATH" >> $BASH_ENV;
+            echo "export PATH=$PATH:node_modules/.bin" >> $BASH_ENV;
 
       - run:
           name: "Install git and SSH client"
@@ -48,11 +48,6 @@ commands:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: Install Global JS Dependencies
-          command: |
-            set +x;
-            npm i -g check-node-version;
       - run:
           name: Install JS Dependencies
           command: |
