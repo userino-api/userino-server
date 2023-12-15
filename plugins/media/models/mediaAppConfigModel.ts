@@ -1,7 +1,7 @@
 import client from '@libs/pg'
 
 export interface MediaAppConfig {
-  app_id: string
+  project_id: string
   client_id: string
   client_secret: string
   is_working: boolean
@@ -9,31 +9,31 @@ export interface MediaAppConfig {
   created_at: string
 }
 
-async function get(params: Pick<MediaAppConfig, 'app_id'>): Promise<MediaAppConfig | null> {
-  const { app_id } = params
+async function get(params: Pick<MediaAppConfig, 'project_id'>): Promise<MediaAppConfig | null> {
+  const { project_id } = params
   const { rows } = await client.query<MediaAppConfig>(`
     SELECT * FROM media.app_configs
-    WHERE app_id = $1
-  `, [app_id])
+    WHERE project_id = $1
+  `, [project_id])
 
   return rows[0]
 }
 
-async function create(params: Pick<MediaAppConfig, 'app_id' | 'client_id' | 'client_secret'>) {
-  const { app_id, client_id, client_secret } = params
+async function create(params: Pick<MediaAppConfig, 'project_id' | 'client_id' | 'client_secret'>) {
+  const { project_id, client_id, client_secret } = params
   await client.query(`
-    INSERT INTO media.app_configs (app_id, client_id, client_secret)
+    INSERT INTO media.app_configs (project_id, client_id, client_secret)
     VALUES                        (  $1  ,     $2   ,       $3     )
-  `, [app_id, client_id, client_secret])
+  `, [project_id, client_id, client_secret])
 }
 
-async function setCredentials(params: Pick<MediaAppConfig, 'app_id' | 'client_secret' | 'client_id'>) {
-  const { app_id, client_secret, client_id } = params
+async function setCredentials(params: Pick<MediaAppConfig, 'project_id' | 'client_secret' | 'client_id'>) {
+  const { project_id, client_secret, client_id } = params
   await client.query(`
     UPDATE media.app_configs
     SET client_id = $2, client_secret = $3
-    WHERE app_id = $1 
-  `, [app_id, client_id, client_secret])
+    WHERE project_id = $1 
+  `, [project_id, client_id, client_secret])
 }
 
 export default {

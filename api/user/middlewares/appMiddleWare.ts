@@ -21,6 +21,7 @@ function createAppMiddleware(): RequestHandler {
     req.session = {
       ...req.session,
       app_id: app.id,
+      project_id: app.project_id,
       app,
     }
 

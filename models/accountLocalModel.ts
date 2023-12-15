@@ -58,7 +58,7 @@ async function getByEmail({ email }: Pick<AccountLocal, 'email'>): Promise<Accou
   return rows[0]
 }
 
-async function setPassword({ id, password }:  { id: string; password: string}): Promise<number> {
+async function setPassword({ id, password }:  { id: string; password: string}) {
   invariant(id, 'accountLocalModel requires valid user_id')
   const hash = passwordTool.create(password)
 
@@ -71,7 +71,7 @@ async function setPassword({ id, password }:  { id: string; password: string}): 
   return rowCount
 }
 
-async function setPasswordByEmail({ email, password }: Pick<AccountLocal, 'email' | 'password'>): Promise<number> {
+async function setPasswordByEmail({ email, password }: Pick<AccountLocal, 'email' | 'password'>) {
   const hash = passwordTool.create(password)
 
   const { rowCount } = await client.query(`
@@ -83,7 +83,7 @@ async function setPasswordByEmail({ email, password }: Pick<AccountLocal, 'email
   return rowCount
 }
 
-async function verifyEmail({ email }: Pick<AccountLocal, 'email'>): Promise<number> {
+async function verifyEmail({ email }: Pick<AccountLocal, 'email'>) {
   const { rowCount } = await client.query(`
     UPDATE accounts_local
     SET is_verified = true
@@ -93,7 +93,7 @@ async function verifyEmail({ email }: Pick<AccountLocal, 'email'>): Promise<numb
   return rowCount
 }
 
-const deleteLocalAccount = async (id: string): Promise<number> => {
+const deleteLocalAccount = async (id: string) => {
   const { rowCount } = await client.query('DELETE FROM accounts_local WHERE id = $1', [id])
   return rowCount
 }

@@ -25,7 +25,7 @@ const getUserDevice = async ({ id, user_id }: Pick<UserBrowser, 'user_id' | 'id'
   return rows[0]
 }
 
-async function create(params: Pick<UserBrowser, 'user_id' | 'id' | 'language' | 'languages' | 'time_zone'>): Promise<number> {
+async function create(params: Pick<UserBrowser, 'user_id' | 'id' | 'language' | 'languages' | 'time_zone'>) {
   const {
     user_id, id, language, languages, time_zone,
   } = params
@@ -38,7 +38,7 @@ async function create(params: Pick<UserBrowser, 'user_id' | 'id' | 'language' | 
   return rowCount
 }
 
-async function update(params: Pick<UserBrowser, 'id' | 'language' | 'languages' | 'time_zone'>): Promise<number> {
+async function update(params: Pick<UserBrowser, 'id' | 'language' | 'languages' | 'time_zone'>) {
   const {
     id, language, languages, time_zone,
   } = params

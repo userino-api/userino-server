@@ -1,24 +1,24 @@
 import configAuthList from '@models/appAuthModel'
 
-async function enableAuth({ key, app_id }: {
-  app_id: string
+async function enableAuth({ key, project_id }: {
+  project_id: string
   key: string
 }) {
-  const changed: number = await configAuthList.setEnabled({ app_id, key, is_enabled: true })
+  const changed = await configAuthList.setEnabled({ project_id, key, is_enabled: true })
 
   if (!changed) {
-    await configAuthList.create({ app_id, key })
+    await configAuthList.create({ project_id, key })
   }
 }
 
-async function disableAuth({ key, app_id }: {
-  app_id: string
+async function disableAuth({ key, project_id }: {
+  project_id: string
   key: string
 }) {
-  const changed: number = await configAuthList.setEnabled({
+  const changed = await configAuthList.setEnabled({
     key,
     is_enabled: false,
-    app_id,
+    project_id,
   })
 
   return changed

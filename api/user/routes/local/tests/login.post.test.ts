@@ -97,6 +97,7 @@ describe('/local/login [POST]', () => {
       statusLast = status
     }
 
+    // @ts-ignore
     expect(statusLast).to.eq(429)
   })
 

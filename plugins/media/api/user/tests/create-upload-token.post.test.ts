@@ -12,7 +12,7 @@ describe('/media/create-upload-token [POST]', () => {
     const defaultApp = await appsModel.getPrimaryApp()
     user = await testUtil.createUser()
     await mediaAppConfigModel.create({
-      app_id: defaultApp.id,
+      project_id: defaultApp.project_id,
       client_id: v4(),
       client_secret: v4(),
     })

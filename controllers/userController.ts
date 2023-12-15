@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import usersModel from '@models/usersModel'
+import usersModel, { User } from '@models/usersModel'
 import coreEventList from '../events/coreEventList'
 
 export interface UserCreatePayload {
@@ -8,11 +8,12 @@ export interface UserCreatePayload {
   first_name?: string
   last_name?: string
   avatar_url?: string | null
+  type?: User['type']
 }
 
 const create = async (userData: UserCreatePayload) => {
   let {
-    account_id, name, first_name, last_name, avatar_url,
+    account_id, name, first_name, last_name, avatar_url, type,
   } = userData
 
   name = name || _.compact([first_name, last_name]).join(' ')
@@ -26,6 +27,7 @@ const create = async (userData: UserCreatePayload) => {
     first_name,
     last_name,
     avatar_url,
+    type,
   })
 
   // user created emit?

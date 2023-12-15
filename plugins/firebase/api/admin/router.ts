@@ -1,11 +1,11 @@
 import { Router } from 'express'
-import appRouter from './app/router'
 import dropRouter from './drop/router'
+import projectRouter from './project/router'
 import userRouter from './user/router'
 
 const router = Router()
 
-router.use('/app', appRouter)
+router.use('/project', projectRouter)
 router.use('/user', userRouter)
 router.use('/drop', dropRouter)
 

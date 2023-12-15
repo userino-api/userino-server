@@ -32,6 +32,7 @@ socket.on('disconnect', () => {
 })
 socket.on('connect_error', e => {
   // proxy errorMessage for better explanation
+  // @ts-ignore
   console.log(prefix, 'connect_error', e?.description?.message || e.message)
 })
 socket.on('reconnect_attempt', () => {

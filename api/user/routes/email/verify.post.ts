@@ -44,7 +44,7 @@ app.post<{}, RouteResponse, RouteBody>('/verify',
       return res.sendError(403, 'Verification is expired')
     }
 
-    const changed: number = await emailController.verifyEmail({ code })
+    const changed = await emailController.verifyEmail({ code })
 
     res.send({
       is_verified: true,

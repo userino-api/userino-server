@@ -17,7 +17,7 @@ const get = async ({ account_id }: Pick<AccountContacts, 'account_id'>): Promise
 async function create(params:
   Pick<AccountContacts, 'account_id' | 'email' | 'phone_number'> &
   Partial<Pick<AccountContacts, 'is_email_verified'>>,
-): Promise<number> {
+) {
   const {
     account_id, email, phone_number, is_email_verified,
   } = params
@@ -30,7 +30,7 @@ async function create(params:
   return rowCount
 }
 
-async function setEmailVerified(params: Pick<AccountContacts, 'account_id' | 'email' | 'is_email_verified'>): Promise<number> {
+async function setEmailVerified(params: Pick<AccountContacts, 'account_id' | 'email' | 'is_email_verified'>) {
   const {
     account_id, email, is_email_verified,
   } = params
@@ -46,7 +46,7 @@ async function setEmailVerified(params: Pick<AccountContacts, 'account_id' | 'em
   return rowCount
 }
 
-// async function setUserEmail(params: Pick<AccountContacts, 'account_id' | 'email'>): Promise<number> {
+// async function setUserEmail(params: Pick<AccountContacts, 'account_id' | 'email'>) {
 //   const {
 //     account_id, email,
 //   } = params

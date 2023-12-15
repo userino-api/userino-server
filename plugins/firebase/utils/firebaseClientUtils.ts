@@ -8,12 +8,12 @@ export type FirebaseAppClient = ReturnType<typeof admin.initializeApp>
 // todo implement config versioning and use version as key too
 const connectedApps: Record<string, FirebaseAppClient> = {}
 
-export const getInitializedFirebaseApp = async ({ app_id }: { app_id: string}): Promise<FirebaseAppClient> => {
-  if (connectedApps[app_id]) {
-    const firebaseApp = connectedApps[app_id]
+export const getInitializedFirebaseApp = async ({ project_id }: { project_id: string}): Promise<FirebaseAppClient> => {
+  if (connectedApps[project_id]) {
+    const firebaseApp = connectedApps[project_id]
     return firebaseApp
   }
-  const firebaseAppConfig = await firebaseAppConfigModel.get({ app_id })
+  const firebaseAppConfig = await firebaseAppConfigModel.get({ project_id })
   if (!firebaseAppConfig?.config) {
     throw new LogicError({ message: 'No configuration', httpStatus: 500 })
   }
@@ -21,8 +21,8 @@ export const getInitializedFirebaseApp = async ({ app_id }: { app_id: string}): 
   const serviceAccount = typeof firebaseAppConfig.config === 'string' ? JSON.parse(firebaseAppConfig.config) : firebaseAppConfig.config
   const firebaseApp = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-  }, app_id)
-  connectedApps[app_id] = firebaseApp
+  }, project_id)
+  connectedApps[project_id] = firebaseApp
 
   return firebaseApp
 }

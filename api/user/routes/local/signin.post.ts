@@ -18,6 +18,7 @@ app.post('/signin',
   middleWares.checkValidation,
   async (req, res) => {
     let { email, password } = req.body
+    const { project_id } = req.session
     email = email.toLowerCase()
 
     if (!emailWhiteList.isOk(email)) {
@@ -30,6 +31,7 @@ app.post('/signin',
     }
 
     const auth_id: string = await authLocalController.createAccount({
+      project_id,
       email,
       password,
     })

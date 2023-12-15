@@ -13,6 +13,7 @@ export interface UserSession {
 
 export interface Session extends UserSession {
   app_id: string
+  project_id: string
   app: App
 }
 

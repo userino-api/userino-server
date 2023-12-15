@@ -27,7 +27,7 @@ const get = async ({ id }: Pick<Mobile, 'id' >): Promise<Mobile | null> => {
 async function create(device: Pick<Mobile,
   'id' | 'device_name' | 'device_key' | 'system_name' | 'manufacturer' | 'model' | 'system_version'
   | 'country' | 'language' | 'language_tag' | 'time_zone' | 'languages' | 'brand'>,
-): Promise<number> {
+) {
   const {
     id, device_name, device_key, system_name, system_version, manufacturer, model, country, language_tag, language, time_zone, languages,
     brand,
@@ -49,7 +49,7 @@ async function create(device: Pick<Mobile,
 async function update(device: Pick<Mobile,
   'id' | 'device_name' | 'device_key' | 'system_name' | 'manufacturer' | 'model' | 'system_version'
   | 'country' | 'language' | 'language_tag' | 'time_zone' | 'languages' | 'brand'>,
-): Promise<number> {
+) {
   const {
     id, device_name, device_key, system_name, system_version, manufacturer, model, country, language_tag, language, time_zone, languages = [], brand,
   } = device

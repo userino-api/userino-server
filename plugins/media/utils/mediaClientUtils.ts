@@ -7,12 +7,12 @@ import mediaAppConfigModel from '../models/mediaAppConfigModel'
 const connectedApps: Record<string, MediaApi> = {
 }
 
-export const getInitializedApp = async ({ app_id }: { app_id: string}): Promise<MediaApi> => {
-  if (connectedApps[app_id]) {
-    const mediaApp = connectedApps[app_id]
+export const getInitializedApp = async ({ project_id }: { project_id: string}): Promise<MediaApi> => {
+  if (connectedApps[project_id]) {
+    const mediaApp = connectedApps[project_id]
     return mediaApp
   }
-  const mediaAppConfig = await mediaAppConfigModel.get({ app_id })
+  const mediaAppConfig = await mediaAppConfigModel.get({ project_id })
   if (!mediaAppConfig?.client_secret) {
     throw new LogicError({ message: 'No configuration', httpStatus: 500 })
   }
@@ -20,7 +20,7 @@ export const getInitializedApp = async ({ app_id }: { app_id: string}): Promise<
   const { client_id, client_secret } = mediaAppConfig
   const mediaApp = new MediaApi({})
   mediaApp.setCredentials({ client_id, client_secret })
-  connectedApps[app_id] = mediaApp
+  connectedApps[project_id] = mediaApp
 
   return mediaApp
 }

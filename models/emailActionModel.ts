@@ -36,7 +36,7 @@ async function get({ code }: Pick<EmailAction, 'code'>): Promise<EmailAction | n
   return rows[0]
 }
 
-async function setDone({ code, is_done }: Pick<EmailAction, 'code' | 'is_done'>): Promise<number> {
+async function setDone({ code, is_done }: Pick<EmailAction, 'code' | 'is_done'>) {
   const { rowCount } = await client.query(`
     UPDATE email_actions
     SET is_done = $2

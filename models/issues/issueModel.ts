@@ -62,7 +62,7 @@ async function getByApp({ app_id }: Pick<Issue, 'app_id'>): Promise<Issue[]> {
   return rows
 }
 
-async function setStatus({ id, status }: Pick<Issue, 'id' | 'status'>): Promise<number> {
+async function setStatus({ id, status }: Pick<Issue, 'id' | 'status'>) {
   invariant(id, 'setAccountId requires valid id')
 
   const { rowCount } = await db.query('UPDATE issues.issues SET status = $2 WHERE id = $1', [id, status])

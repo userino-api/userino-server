@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import testUtil, { TestApp, TestUser } from '../../../../../../test/helpers/testUtil'
+import testUtil, { TestApp } from '../../../../../../test/helpers/testUtil'
 import agent from '../../../../tests/testServer'
 
 describe('/admin:/app/:id [DELETE]', () => {

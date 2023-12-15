@@ -2,12 +2,14 @@ import accountController from '@controllers/accountController'
 import emailController from '@controllers/emailController'
 import accountLocalModel from '@models/accountLocalModel'
 
-async function createAccount({ email, password }: {
+async function createAccount({ email, password, project_id }: {
+  project_id: string
   email: string
   password: string
 }) {
   // todo check if we can link to existing account
   const { account_id } = await accountController.create({
+    project_id,
     email,
     user: {},
   })

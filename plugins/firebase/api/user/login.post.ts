@@ -31,7 +31,7 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
   middleWares.checkValidation,
   async (req, res) => {
     const { accessToken, device, localize } = req.body
-    const { app_id } = req.session
+    const { app_id, project_id } = req.session
     const ip = getClientIP(req) as string
 
     const { firebaseApp } = res.locals
@@ -44,7 +44,7 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
     } = firebaseUser
 
     // step 2 => check if user exists with such email or facebook_id
-    const firebaseAccount = await firebaseAccountModel.get({ firebase_id })
+    const firebaseAccount = await firebaseAccountModel.get({ firebase_id, project_id })
     let account_id = firebaseAccount?.account_id
 
     // step 2.1 => create if not exists
@@ -52,9 +52,11 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
       await firebaseUserModel.create({
         firebase_id,
         data: firebaseUser,
+        project_id,
       })
 
       const account = await firebaseController.create({
+        project_id,
         email,
         name,
         first_name,
@@ -66,6 +68,7 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
       await firebaseAccountModel.create({
         firebase_id,
         account_id: account.account_id,
+        project_id,
       })
     }
 

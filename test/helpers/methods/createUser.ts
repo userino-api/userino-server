@@ -87,15 +87,19 @@ export class TestUser {
   }
 }
 
-export async function createUser(params?: { email?: string; type?: User['type'] }): Promise<TestUser> {
-  let { email, type } = params || {}
+export async function createUser(params?: { email?: string; type?: User['type']; project_id?: string }): Promise<TestUser> {
+  let { email, type, project_id } = params || {}
   if (!email) email = faker.internet.email()
+  if (!project_id) {
+    const app = await appsModel.getPrimaryApp()
+    project_id = app.project_id
+  }
 
   let name = faker.person.fullName()
   let username = faker.internet.userName()
   const avatar_url = faker.internet.avatar()
   const app = await appsModel.getPrimaryApp()
-  const account_id = await accountModel.create({ email })
+  const account_id = await accountModel.create({ email, project_id })
   const user_id = await appUserModel.create({
     account_id, app_id: app.id,
   })

@@ -44,7 +44,7 @@ const getUserDevices = async ({ user_id }: Pick<UserMobile, 'user_id'>): Promise
 
 async function create(device: Pick<UserMobile,
   'user_id' | 'mobile_id'>,
-): Promise<number> {
+) {
   const {
     mobile_id, user_id,
   } = device

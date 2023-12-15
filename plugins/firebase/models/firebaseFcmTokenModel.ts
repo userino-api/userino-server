@@ -16,7 +16,7 @@ async function create(params: Pick<FirebaseFcmToken, 'user_id' | 'device_id' | '
   `, [user_id, device_id, token])
 }
 
-async function update(params: Pick<FirebaseFcmToken, 'user_id' | 'device_id' | 'token'>): Promise<number> {
+async function update(params: Pick<FirebaseFcmToken, 'user_id' | 'device_id' | 'token'>) {
   const { user_id, device_id, token } = params
   const { rowCount } = await client.query(`
     UPDATE firebase.fcm_tokens 

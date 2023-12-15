@@ -13,7 +13,7 @@ describe('/firebase/fcm-token [POST]', () => {
     const defaultApp = await appsModel.getPrimaryApp()
     user = await testUtil.createUser()
     await firebaseAppConfigModel.create({
-      app_id: defaultApp.id,
+      project_id: defaultApp.project_id,
       config: {
         type: 'service_account',
         project_id: 'test',

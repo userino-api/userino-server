@@ -83,7 +83,7 @@ async function getAllByAccountId({ account_id }: Pick<AppUser, 'account_id'>): P
   return rows
 }
 
-async function setAccountId({ id, account_id }: Pick<AppUser, 'id' | 'account_id'>): Promise<number> {
+async function setAccountId({ id, account_id }: Pick<AppUser, 'id' | 'account_id'>) {
   invariant(id, 'setAccountId requires valid id')
   invariant(account_id, 'setAccountId requires valid account_id')
 
@@ -91,7 +91,7 @@ async function setAccountId({ id, account_id }: Pick<AppUser, 'id' | 'account_id
   return rowCount
 }
 
-async function deleteUser(id: string): Promise<number> {
+async function deleteUser(id: string) {
   const { rowCount } = await db.query('DELETE FROM app_users WHERE id = $1', [id])
   return rowCount
 }

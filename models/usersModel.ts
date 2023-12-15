@@ -30,7 +30,7 @@ async function getByUserName(userName: string): Promise<User | null> {
   return rows[0]
 }
 
-async function create(params: Pick<User, 'id' | 'name' | 'first_name' | 'last_name' | 'avatar_url' | 'username' | 'type'>): Promise<number> {
+async function create(params: Pick<User, 'id' | 'name' | 'first_name' | 'last_name' | 'avatar_url' | 'username' | 'type'>) {
   const {
     id, name, first_name, last_name, avatar_url, username, type = 'user',
   } = params

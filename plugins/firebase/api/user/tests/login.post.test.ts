@@ -17,7 +17,7 @@ describe('/firebase/login [POST]', () => {
   before(async () => {
     const defaultApp = await appsModel.getPrimaryApp()
     await firebaseAppConfigModel.create({
-      app_id: defaultApp.id,
+      project_id: defaultApp.project_id,
       config: {
         type: 'service_account',
         project_id: 'test',

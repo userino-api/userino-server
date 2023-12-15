@@ -3,6 +3,7 @@ import userContactsModel from '@models/userContactsModel'
 import userController, { UserCreatePayload } from './userController'
 
 export interface ControllerAccountCreateParams {
+  project_id: string
   email?: string | null
   is_email_verified?: boolean
   phone_number?: string | null
@@ -13,13 +14,13 @@ async function create(
   params: ControllerAccountCreateParams,
 ): Promise<{ account_id: string }> {
   let {
-    email, phone_number, user, is_email_verified,
+    email, phone_number, user, is_email_verified, project_id,
   } = params
 
   let account_id: string | null = null
 
   if (email) {
-    const accountExists = await accountModel.getByEmail({ email })
+    const accountExists = await accountModel.getByEmail({ email, project_id })
     if (accountExists) {
       account_id = accountExists.id
     }
@@ -27,6 +28,7 @@ async function create(
 
   if (!account_id) {
     account_id = await accountModel.create({
+      project_id,
       email,
       phone_number,
     })

@@ -3,7 +3,6 @@ import { param } from 'express-validator'
 import { checkValidation } from '@libs/middleWares'
 import appsModel, { App } from '@models/appsModel'
 import idRouter from './@id/router'
-import createPost from './create.post'
 import listGet from './list.get'
 
 const router = express.Router()
@@ -14,7 +13,6 @@ export interface RouterLocals {
 
 router.use([
   listGet,
-  createPost,
 ])
 
 router.use<{ id: string }>('/:id', param('id').isUUID(), checkValidation, async (req, res, next) => {

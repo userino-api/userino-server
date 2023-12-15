@@ -38,9 +38,9 @@ async function authorizeAccount(
     app_id, account_id, ip, req,
   }: { account_id: string; app_id: string; ip: string; req: express.Request },
 ): Promise<{ user_id: string; token: string }> {
-  let user = await appUserModel.getByAccountId({ account_id, app_id })
-  let user_id: string | undefined = user?.id
-  if (!user) {
+  let appUser = await appUserModel.getByAccountId({ account_id, app_id })
+  let user_id: string | undefined = appUser?.id
+  if (!appUser) {
     user_id = await createConnection({ app_id, account_id })
   }
 
