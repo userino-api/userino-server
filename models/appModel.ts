@@ -40,6 +40,11 @@ async function getPrimaryApp(): Promise<App> {
   return rows[0]
 }
 
+async function getByProject({ project_id }: Pick<App, 'project_id'>): Promise<App[]> {
+  const { rows } = await client.query<App>('SELECT * FROM apps WHERE project_id = $1', [project_id])
+  return rows
+}
+
 async function deleteApp(app_id: string) {
   const { rowCount } = await client.query('DELETE FROM apps WHERE id = $1', [app_id])
   return rowCount
@@ -50,5 +55,6 @@ export default {
   get,
   getAll,
   getPrimaryApp,
+  getByProject,
   delete: deleteApp,
 }

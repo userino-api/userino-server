@@ -25,7 +25,7 @@
   "dependencies": {
     "@migramon/migrate": "^0.0.6",
     "@migramon/postgres-plugin": "^0.1.0",
-    "@octoguild-licence/client": "^1.0.0",
+    "@octoguild-licence/client": "^1.1.1",
     "@octoguild-licence/express": "^1.0.1",
     "@octoguild/eslint-config-server": "^0.2.0",
     "@slack/webhook": "^7.0.1",
