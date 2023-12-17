@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 // import devicesModel from '@models/devicesModel'
 import appUserModel from '@models/appUserModel'
-import appsModel from '@models/appsModel'
+import appsModel from '@models/appModel'
 import tokensModel from '@models/tokensModel'
 import usersModel from '@models/usersModel'
 import agent from '../../../../../api/user/tests/testServer'

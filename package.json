@@ -10,6 +10,7 @@
     "test": "mocha ./api/**/{*,*.*}.test.ts ./jobs/**/*.test.ts ./consumer/**/*.test.ts --timeout 10000 --forbid-only",
     "coverage": "npx nyc mocha ./api/**/{*,*.*}.test.ts ./jobs/**/*.test.ts ./consumer/**/*.test.ts",
     "testDoc": "mocha ./api/**/{*,*.*}.test.ts ./jobs/**/*.test.ts ./consumer/**/*.test.ts --timeout 10000 --reporter mocha-multi-reporters --reporter-options configFile=multirReporterConfig.json",
+    "ts-extract:core": "ts-extract-typings --config ./typings/core/ts-extract-config.ts",
     "preinstall": "bash ./scripts/npm/preinstall.sh",
     "prepare": "husky install",
     "migrate": "migramon migrate"
@@ -95,6 +96,7 @@
     "@types/validator": "^13.11.7",
     "@types/yargs": "^17.0.32",
     "@zvs001/scripts": "^0.3.0",
+    "@zvs001/ts-extractor": "^0.0.1",
     "babel-plugin-module-resolver": "^5.0.0",
     "chai": "^4.3.10",
     "eslint": "^7.32.0",
@@ -103,6 +105,7 @@
     "mocha": "10.2.0",
     "mockdate": "^3.0.5",
     "sinon": "^17.0.1",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "ts-node": "^10.9.2"
   }
 }

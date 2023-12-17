@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { App } from '@models/appsModel'
+import { App } from '@models/appModel'
 import { RouterLocals } from '../router'
 
 const router = Router()

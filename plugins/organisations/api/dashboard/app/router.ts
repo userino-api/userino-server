@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { param } from 'express-validator'
 import { checkValidation } from '@libs/middleWares'
-import appsModel, { App } from '@models/appsModel'
+import appsModel, { App } from '@models/appModel'
 import idRouter from './@id/router'
 
 const router = Router()

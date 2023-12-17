@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import appsModel, { App } from '@models/appsModel'
+import appsModel, { App } from '@models/appModel'
 import config from '../../../config/settings'
 
 function createAppMiddleware(): RequestHandler {

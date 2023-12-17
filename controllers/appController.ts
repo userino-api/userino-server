@@ -1,7 +1,7 @@
 import express from 'express'
 import invariant from 'invariant'
+import appsModel from '@models/appModel'
 import appUserModel, { AppUser } from '@models/appUserModel'
-import appsModel from '@models/appsModel'
 import tokenModel, { Token } from '@models/tokensModel'
 import coreEventList from '../events/coreEventList'
 import getDeviceInfoFromRequest from '../utils/getDeviceInfoFromRequest'

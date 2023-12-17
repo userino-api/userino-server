@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { AppUser } from '@models/appUserModel'
-import { App } from '@models/appsModel'
+import { App } from '@models/appModel'
 
 // todo fix dir
 

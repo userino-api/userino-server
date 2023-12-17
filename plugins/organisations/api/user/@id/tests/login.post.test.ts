@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import appsModel from '@models/appsModel'
+import appsModel from '@models/appModel'
 import agent from '../../../../../../api/user/tests/testServer'
 import createOrganisation, { TestOrganisation } from '../../../../tests/helpers/createOrganisation'
 import testUtil, { TestUser } from '../../../../tests/testUtils'

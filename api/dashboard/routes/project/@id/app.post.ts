@@ -1,7 +1,7 @@
 import { checkValidator } from '@zvs001/express'
 import { Router } from 'express'
 import { body } from 'express-validator'
-import appsModel, { App } from '@models/appsModel'
+import appsModel, { App } from '@models/appModel'
 import { RouterLocals } from '../router'
 
 const router = Router()

@@ -1,6 +1,6 @@
 import { expect } from 'chai'
 import { v4 } from 'uuid'
-import appsModel from '@models/appsModel'
+import appsModel from '@models/appModel'
 import agent from '../../../../../api/user/tests/testServer'
 import mediaAppConfigModel from '../../../models/mediaAppConfigModel'
 import testUtil, { TestUser } from '../../../tests/testUtils'

@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid'
-import appsModel from '@models/appsModel'
+import appsModel from '@models/appModel'
 import createProject, { TestProject } from './createProject'
 
 export class TestApp {

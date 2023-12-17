@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
+import projectController from '@controllers/projectController'
 import { checkValidation } from '@libs/middleWares'
 import projectModel, { Project } from '@models/projectModel'
 import { RouterLocals } from './router'
@@ -14,8 +15,10 @@ router.post<{}, RouteResponse, RouteBody, {}, RouterLocals>('/create',
   checkValidation,
   async (req, res) => {
     const { name } = req.body
+    const { user_id } = req.session
 
-    const id = await projectModel.create({
+    const id = await projectController.createProject({
+      user_id,
       name,
     })
 
