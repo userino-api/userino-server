@@ -1,7 +1,7 @@
 import { getClientIP } from '@zvs001/express'
 import express from 'express'
 import { body } from 'express-validator'
-import appController from '@controllers/appController'
+import appController from '@controllers/appAuthController'
 import middleWares from '@libs/middleWares'
 import onLoginEnd from '../../../../hooks/onLoginEnd'
 import firebaseController from '../../controllers/firebaseController'

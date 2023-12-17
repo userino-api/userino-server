@@ -1,6 +1,6 @@
 import { getClientIP } from '@zvs001/express'
 import express from 'express'
-import appController from '@controllers/appController'
+import appController from '@controllers/appAuthController'
 import onLoginEnd from '../../../../../hooks/onLoginEnd'
 import getDeviceInfoFromRequest from '../../../../../utils/getDeviceInfoFromRequest'
 import { RouterLocals } from '../router'

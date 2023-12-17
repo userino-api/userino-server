@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import appController from '@controllers/appController'
+import appController from '@controllers/appAuthController'
 import { AppUser } from '@models/appUserModel'
 import { RouterLocals } from '../router'
 

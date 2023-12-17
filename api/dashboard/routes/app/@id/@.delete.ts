@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import appController from '@controllers/appController'
+import appController from '@controllers/appAuthController'
 import { RouterLocals } from '../router'
 
 const router = Router()
