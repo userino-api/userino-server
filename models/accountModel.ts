@@ -17,6 +17,7 @@ async function create(params: Pick<Account, 'phone_number' | 'email' | 'project_
   let {
     email, phone_number, project_id,
   } = params
+  invariant(project_id, 'create requires valid project_id')
   const id = uuid()
   email = email?.toLowerCase()
 

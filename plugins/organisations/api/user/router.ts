@@ -4,6 +4,7 @@ import { param } from 'express-validator'
 import authMiddleWares from '@middlewares/authMiddleWares'
 import organisationAdminModel, { OrganisationAdmin } from '../../models/organisationAdminModel'
 import idRouter from './@id/router'
+import create from './create.post'
 import listGet from './list.get'
 
 const router = Router()
@@ -11,6 +12,7 @@ const router = Router()
 router.use(authMiddleWares.checkAuthCore)
 router.use([
   listGet,
+  create,
 ])
 
 export interface RouterLocals {
