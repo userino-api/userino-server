@@ -10,7 +10,7 @@ function decodeFirebaseToken(decodedToken: DecodedIdToken) {
   } = decodedToken
 
   name = name.trim()
-  if (!name) name = 'No Name'
+  if (!name) name = 'User Name'
 
   const { sign_in_provider } = details
 
