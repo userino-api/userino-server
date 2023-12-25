@@ -15,6 +15,9 @@ async function createConnection({ app_id, account_id }: { account_id: string; ap
   return id
 }
 
+/**
+ * @note this method is needed when account is already ready. prefer use authorizeAccount() for authorization
+ */
 const authorize = async ({
   user_id, ip, device_type, device_id,
 }: Pick<Token, 'device_type' | 'device_id' | 'user_id' | 'ip'>): Promise<{ token: string }> => {

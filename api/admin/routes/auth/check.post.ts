@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 import { checkValidation } from '@libs/middleWares'
-import userAccountsModel, { AppUser } from '@models/appUserModel'
+import appUserModel, { AppUser } from '@models/appUserModel'
 import tokensModel from '@models/tokensModel'
-import coreEventList from '../../../../events/coreEventList'
 
 const app = Router()
 
@@ -22,7 +21,7 @@ app.post<{}, RouteResponse, RouteBody>('/check',
     if (!tokenObj) return res.sendError(401, 'Not Authorized')
 
     // todo probably here we must check app_id scope
-    const user = await userAccountsModel.get(tokenObj.user_id)
+    const user = await appUserModel.get(tokenObj.user_id)
     if (!user) return res.sendError(501, 'User is broken')
 
     res.send(user)

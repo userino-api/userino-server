@@ -7,10 +7,13 @@ const router = Router()
 
 router.post<{}, {}, {}, {}, RouterLocals>('/login', async (req, res) => {
   const { organisationAdmin } = res.locals
+  const { app_id } = req.session
   const ip = getClientIP(req) as string
 
-  const data = await appController.authorize({
-    user_id: organisationAdmin.organisation_id,
+  const data = await appController.authorizeAccount({
+    req,
+    app_id,
+    account_id: organisationAdmin.organisation_id,
     ip,
   })
 
