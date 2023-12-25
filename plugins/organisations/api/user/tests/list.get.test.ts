@@ -19,5 +19,9 @@ describe('/organisation/list [GET]', () => {
     const { status, body } = await agent.get('/organisation/list').set('authorization', user.token)
     expect(status).to.equals(200)
     expect(body).to.have.lengthOf(1)
+    expect(body[0]).to.deep.include({
+      id: organisation.id,
+      name: organisation.user.name,
+    })
   })
 })

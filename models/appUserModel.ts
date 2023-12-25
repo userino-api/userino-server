@@ -43,7 +43,7 @@ async function getMany(ids: string[]): Promise<UserFull[]> {
   if (_.isEmpty(ids)) return []
 
   const sql = format(`
-    SELECT * FROM app_users 
+    SELECT users.*, app_users.* FROM app_users 
     LEFT JOIN users ON app_users.account_id = users.id
     WHERE app_users.id IN (%L)
   `, ids)

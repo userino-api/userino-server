@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker'
 import { v4 as uuid } from 'uuid'
 import accountLocalModel from '@models/accountLocalModel'
 import accountModel from '@models/accountModel'
-import appUserModel from '@models/appUserModel'
 import appsModel from '@models/appModel'
+import appUserModel from '@models/appUserModel'
 import deviceMobileModel from '@models/devices/deviceMobileModel'
 import deviceUserMobileModel from '@models/devices/deviceUserMobileModel'
 import tokensModel from '@models/tokensModel'
@@ -25,6 +25,8 @@ export class TestUser {
 
   avatar_url: string
 
+  name: string
+
   constructor(params: {
     account_id: string
     user_id: string
@@ -32,6 +34,7 @@ export class TestUser {
     email: string
     username: string
     avatar_url: string
+    name:string
 }) {
     this.account_id = params.account_id
     this.user_id = params.user_id
@@ -40,6 +43,7 @@ export class TestUser {
     this.email = params.email
     this.username = params.username
     this.avatar_url = params.avatar_url
+    this.name = params.name
   }
 
   async fetch() {
@@ -110,7 +114,7 @@ export async function createUser(params?: { email?: string; type?: User['type'];
   const token = await tokensModel.createToken({ user_id, ip: 'test' })
 
   const testUser = new TestUser({
-    account_id, user_id, token, email, username, avatar_url,
+    account_id, user_id, token, email, username, avatar_url, name,
   })
 
   return testUser
