@@ -8,7 +8,7 @@ import deviceMobileModel from '@models/devices/deviceMobileModel'
 import deviceUserMobileModel from '@models/devices/deviceUserMobileModel'
 import tokensModel from '@models/tokensModel'
 import userContactsModel from '@models/userContactsModel'
-import usersModel, { User } from '@models/usersModel'
+import usersModel, { User } from '@models/userModel'
 
 export class TestUser {
   account_id: string

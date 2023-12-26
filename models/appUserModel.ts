@@ -3,7 +3,7 @@ import _ from 'lodash'
 import format from 'pg-format'
 import { v4 as uuid } from 'uuid'
 import db from '../libs/pg'
-import { User } from './usersModel'
+import { User } from './userModel'
 
 export interface AppUser {
   account_id: string

@@ -2,7 +2,7 @@ import express from 'express'
 import { param } from 'express-validator'
 import { checkValidation } from '@libs/middleWares'
 import appUserModel, { AppUser } from '@models/appUserModel'
-import usersModel, { User } from '@models/usersModel'
+import usersModel, { User } from '@models/userModel'
 import idRouter from './@id/router'
 
 const app = express.Router()

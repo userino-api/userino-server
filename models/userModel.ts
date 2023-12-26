@@ -4,6 +4,7 @@ import db from '../libs/pg'
 
 export interface User {
   id: string
+  asset_id?: string
   avatar_url?: string | null
   name?: string | null
   first_name?: string | null
@@ -71,6 +72,29 @@ async function setName({ id, name }: { id: string; name: string}) {
   return rowCount
 }
 
+async function setAsset({ id, asset_id }: Pick<User, 'id' | 'asset_id'>) {
+  const { rowCount } = await db.query(`
+    UPDATE users
+    SET asset_id = $2
+    WHERE id = $1 
+  `, [id, asset_id])
+
+  return rowCount
+}
+
+/**
+ *  @note: probably can be dropped in future
+ */
+async function setAvatarUrl({ id, avatar_url }: Pick<User, 'id' | 'avatar_url'>) {
+  const { rowCount } = await db.query(`
+    UPDATE users
+    SET avatar_url = $2
+    WHERE id = $1 
+  `, [id, avatar_url])
+
+  return rowCount
+}
+
 export default {
   create,
   get,
@@ -78,4 +102,6 @@ export default {
   getArray,
   setUserName,
   setName,
+  setAsset,
+  setAvatarUrl,
 }

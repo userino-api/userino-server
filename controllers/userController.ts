@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import usersModel, { User } from '@models/usersModel'
+import userModel, { User } from '@models/userModel'
 import coreEventList from '../events/coreEventList'
 
 export interface UserCreatePayload {
@@ -21,7 +21,7 @@ const create = async (userData: UserCreatePayload) => {
   if (!name) name = 'No Name'
 
   // create user account
-  await usersModel.create({
+  await userModel.create({
     id: account_id,
     name,
     first_name,
@@ -35,14 +35,23 @@ const create = async (userData: UserCreatePayload) => {
 }
 
 async function setUserName({ account_id, username, id }: { account_id: string; username: string; id: string }) {
-  const changed = await usersModel.setUserName({ id: account_id, username })
+  const changed = await userModel.setUserName({ id: account_id, username })
   await coreEventList.userUpdated({ app_user_id: id, account_id })
   return changed
 }
 
 async function setName({ account_id, name, id }: { account_id: string; name: string; id: string }) {
-  const changed = await usersModel.setName({ id: account_id, name })
+  const changed = await userModel.setName({ id: account_id, name })
   await coreEventList.userUpdated({ app_user_id: id, account_id })
+  return changed
+}
+
+async function setAvatar({
+  id, account_id, asset_id, avatar_url,
+}: { id: string; account_id: string; asset_id: string; avatar_url: string}) {
+  const changed = await userModel.setAsset({ id: account_id, asset_id })
+  await coreEventList.userUpdated({ app_user_id: id, account_id })
+  await userModel.setAvatarUrl({ id: account_id, avatar_url })
   return changed
 }
 
@@ -50,4 +59,5 @@ export default {
   create,
   setUserName,
   setName,
+  setAvatar,
 }
