@@ -50,10 +50,13 @@ async function setAvatar({
   id, account_id, asset_id, avatar_url,
 }: { id: string; account_id: string; asset_id: string; avatar_url: string}) {
   const changed = await userModel.setAsset({ id: account_id, asset_id })
-  await coreEventList.userUpdated({ app_user_id: id, account_id })
   if (avatar_url) {
     await userModel.setAvatarUrl({ id: account_id, avatar_url })
   }
+
+  // always must be the last one
+  await coreEventList.userUpdated({ app_user_id: id, account_id })
+
   return changed
 }
 
