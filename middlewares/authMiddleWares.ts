@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import invariant from 'invariant'
 import _ from 'lodash'
 import { validate } from 'uuid'
@@ -25,16 +25,17 @@ async function checkAuthCore(req: RequestCore, res: Response, next: NextFunction
 
   const tokenObj = await tokensModel.get(token)
   if (_.isEmpty(tokenObj)) return res.sendError(401, 'Token is not authorized')
-  const { user_id, device_id, session } = tokenObj
+  const { user_id, device_id, session: tokenSession } = tokenObj
 
   const appUser = await appUserModel.get(user_id)
 
   const reqSession: any = {
+    ...req.session,
     user_id: appUser?.id,
     account_id: appUser?.account_id,
     app_id: appUser?.app_id,
     appUser,
-    ...session,
+    ...tokenSession,
   }
 
   req.session = reqSession

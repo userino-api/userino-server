@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { v4 as uuid } from 'uuid'
 import accountLocalModel from '@models/accountLocalModel'
 import accountModel from '@models/accountModel'
-import appsModel from '@models/appModel'
+import appsModel, { App } from '@models/appModel'
 import appUserModel from '@models/appUserModel'
 import deviceMobileModel from '@models/devices/deviceMobileModel'
 import deviceUserMobileModel from '@models/devices/deviceUserMobileModel'
@@ -91,19 +91,23 @@ export class TestUser {
   }
 }
 
-export async function createUser(params?: { email?: string; type?: User['type']; project_id?: string }): Promise<TestUser> {
-  let { email, type, project_id } = params || {}
+export async function createUser(params?: { email?: string; type?: User['type']; app_id?:string }): Promise<TestUser> {
+  let {
+    email, type, app_id,
+  } = params || {}
   if (!email) email = faker.internet.email()
-  if (!project_id) {
-    const app = await appsModel.getPrimaryApp()
-    project_id = app.project_id
+
+  let app: App
+  if (app_id) {
+    app = await appsModel.get(app_id) as App
+  } else {
+    app = await appsModel.getPrimaryApp()
   }
 
   let name = faker.person.fullName()
   let username = faker.internet.userName()
   const avatar_url = faker.internet.avatar()
-  const app = await appsModel.getPrimaryApp()
-  const account_id = await accountModel.create({ email, project_id })
+  const account_id = await accountModel.create({ email, project_id: app.project_id })
   const user_id = await appUserModel.create({
     account_id, app_id: app.id,
   })

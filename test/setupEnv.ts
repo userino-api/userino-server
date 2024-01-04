@@ -5,3 +5,4 @@ require('@octoguild-licence/client/test/stub')
 
 // plugins
 require('../plugins/firebase/tests/setup')
+require('../plugins/media/tests/setup')
