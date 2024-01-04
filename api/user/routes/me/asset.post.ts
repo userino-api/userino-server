@@ -23,7 +23,7 @@ router.post<{}, {}, RouteBody, {}, RouterLocals>('/asset',
     req.log('set avatar', asset)
 
     const changed = await userController.setAvatar({
-      account_id: appUser.account_id, id: appUser.id, asset_id, avatar_url: asset.url,
+      account_id: appUser.account_id, id: appUser.id, asset_id, avatar_url: asset.original.url,
     })
 
     res.send({ changed })

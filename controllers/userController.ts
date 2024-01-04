@@ -51,7 +51,9 @@ async function setAvatar({
 }: { id: string; account_id: string; asset_id: string; avatar_url: string}) {
   const changed = await userModel.setAsset({ id: account_id, asset_id })
   await coreEventList.userUpdated({ app_user_id: id, account_id })
-  await userModel.setAvatarUrl({ id: account_id, avatar_url })
+  if (avatar_url) {
+    await userModel.setAvatarUrl({ id: account_id, avatar_url })
+  }
   return changed
 }
 
