@@ -15,7 +15,7 @@ export const getInitializedFirebaseApp = async ({ project_id }: { project_id: st
   }
   const firebaseAppConfig = await firebaseAppConfigModel.get({ project_id })
   if (!firebaseAppConfig?.config) {
-    throw new LogicError({ message: 'No configuration', httpStatus: 500 })
+    throw new LogicError({ message: 'No configuration for firebase', httpStatus: 412 })
   }
 
   const serviceAccount = typeof firebaseAppConfig.config === 'string' ? JSON.parse(firebaseAppConfig.config) : firebaseAppConfig.config

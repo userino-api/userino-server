@@ -14,7 +14,7 @@ export const getInitializedApp = async ({ project_id }: { project_id: string}): 
   }
   const mediaAppConfig = await mediaAppConfigModel.get({ project_id })
   if (!mediaAppConfig?.client_secret) {
-    throw new LogicError({ message: 'No configuration', httpStatus: 500 })
+    throw new LogicError({ message: 'No configuration for media', httpStatus: 412 })
   }
 
   const { client_id, client_secret } = mediaAppConfig
