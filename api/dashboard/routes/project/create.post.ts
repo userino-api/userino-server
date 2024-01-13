@@ -15,7 +15,7 @@ router.post<{}, RouteResponse, RouteBody, {}, RouterLocals>('/create',
   checkValidation,
   async (req, res) => {
     const { name } = req.body
-    const { user_id } = req.session
+    const { user_id } = req.session || {}
 
     const id = await projectController.createProject({
       user_id,
