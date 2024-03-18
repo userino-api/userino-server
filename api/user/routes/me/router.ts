@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import get from './@.get'
 import asset from './asset.post'
+import deleteUser from './delete.post'
 import name from './name.post'
 import username from './username.post'
 
@@ -11,6 +12,7 @@ router.use([
   name,
   asset,
   username,
+  deleteUser,
 ])
 
 export default router

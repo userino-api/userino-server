@@ -1,7 +1,7 @@
 import express from 'express'
 import invariant from 'invariant'
 import appsModel from '@models/appModel'
-import appUserModel, { AppUser } from '@models/appUserModel'
+import appUserModel from '@models/appUserModel'
 import tokenModel, { Token } from '@models/tokensModel'
 import coreEventList from '../events/coreEventList'
 import getDeviceInfoFromRequest from '../utils/getDeviceInfoFromRequest'
@@ -56,12 +56,6 @@ async function authorizeAccount(
   }
 }
 
-async function deleteConnection({ id, account_id, app_id }: Pick<AppUser, 'id' | 'account_id' | 'app_id'>) {
-  await appUserModel.delete(id)
-
-  coreEventList.appUserDeleted({ id, account_id, app_id })
-}
-
 async function deleteApp({ app_id }: { app_id: string }) {
   await appsModel.delete(app_id)
   // todo send event
@@ -70,6 +64,5 @@ async function deleteApp({ app_id }: { app_id: string }) {
 export default {
   authorize,
   authorizeAccount,
-  deleteConnection,
   deleteApp,
 }

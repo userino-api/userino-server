@@ -1,4 +1,7 @@
 import _ from 'lodash'
+import appUserModel from '@models/appUserModel'
+import tokensModel from '@models/tokensModel'
+import userLogModel from '@models/userLogModel'
 import userModel, { User } from '@models/userModel'
 import coreEventList from '../events/coreEventList'
 
@@ -60,9 +63,31 @@ async function setAvatar({
   return changed
 }
 
+async function deleteUser({ id }: { id: string}) {
+  const appUser = await appUserModel.get(id)
+  if (!appUser) {
+    // is deleted already?
+    return null
+  }
+
+  await userLogModel.create({
+    user_id: appUser.id,
+    account_id: appUser.account_id,
+    app_id: appUser.app_id,
+    action: 'DELETED',
+  })
+
+  await tokensModel.deleteByUser(appUser.id)
+  await appUserModel.delete(appUser.id)
+
+  // lazy clean less important data
+  await coreEventList.appUserDeleted({ id: appUser.id, account_id: appUser.account_id, app_id: appUser.app_id })
+}
+
 export default {
   create,
   setUserName,
   setName,
   setAvatar,
+  deleteUser,
 }

@@ -27,6 +27,8 @@ export class TestUser {
 
   name: string
 
+  app_id: string
+
   constructor(params: {
     account_id: string
     user_id: string
@@ -35,6 +37,7 @@ export class TestUser {
     username: string
     avatar_url: string
     name:string
+    app_id: string
 }) {
     this.account_id = params.account_id
     this.user_id = params.user_id
@@ -44,6 +47,7 @@ export class TestUser {
     this.username = params.username
     this.avatar_url = params.avatar_url
     this.name = params.name
+    this.app_id = params.app_id
   }
 
   async fetch() {
@@ -118,7 +122,7 @@ export async function createUser(params?: { email?: string; type?: User['type'];
   const token = await tokensModel.createToken({ user_id, ip: 'test' })
 
   const testUser = new TestUser({
-    account_id, user_id, token, email, username, avatar_url, name,
+    account_id, user_id, token, email, username, avatar_url, name, app_id: app.id,
   })
 
   return testUser

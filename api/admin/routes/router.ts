@@ -4,6 +4,7 @@ import config from '../../../config/settings'
 import authRouter from './auth/router'
 import healthGet from './health.get'
 import userRouter from './user/router'
+import verifyPost from './verify.post'
 
 if (config.licence) {
   // eslint-disable-next-line global-require
@@ -17,6 +18,9 @@ if (config.licence) {
   app.use(licenceExpress.createAccessMiddleWare())
 }
 
+app.use([
+  verifyPost,
+])
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
 

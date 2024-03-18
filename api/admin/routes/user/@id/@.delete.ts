@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import appController from '@controllers/appAuthController'
+import userController from '@controllers/userController'
 import { AppUser } from '@models/appUserModel'
 import { RouterLocals } from '../router'
 
@@ -12,7 +12,7 @@ app.delete<{}, RouteResponse, RouteBody, {}, RouterLocals>('/',
   async (req, res) => {
     const { user, appUser } = res.locals
 
-    await appController.deleteConnection(appUser)
+    await userController.deleteUser({ id: appUser.id })
 
     res.send()
   })
