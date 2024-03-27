@@ -4,8 +4,13 @@ import { checkValidation } from '@libs/middleWares'
 import appUserModel, { AppUser } from '@models/appUserModel'
 import usersModel, { User } from '@models/userModel'
 import idRouter from './@id/router'
+import logs from './logs.get'
 
 const app = express.Router()
+
+app.use([
+  logs,
+])
 
 export interface RouterLocals {
   appUser: AppUser

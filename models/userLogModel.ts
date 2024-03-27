@@ -13,7 +13,7 @@ async function getByApp({ app_id, start_at }: Pick<UserLog, 'app_id'> & { start_
   const timeMoment = dayjs(start_at)
 
   const { rows = [] } = await db.query(`
-    SELECT * FROM users 
+    SELECT * FROM user_log
     WHERE app_id = $1 AND created_at >= $2
     ORDER BY created_at ASC
     LIMIT 100

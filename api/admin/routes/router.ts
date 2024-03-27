@@ -15,7 +15,16 @@ const app = express.Router()
 app.use(healthGet)
 
 if (config.licence) {
-  app.use(licenceExpress.createAccessMiddleWare())
+  app.use(licenceExpress.createAccessMiddleWare({
+    onSuccess(params): any {
+      const {
+        req, data, client_id,
+      } = params
+      const { app_ref } = data || {}
+      // @ts-ignore
+      req.session = { app_id: app_ref }
+    },
+  }))
 }
 
 app.use([
