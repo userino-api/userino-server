@@ -1,23 +1,30 @@
+import { licenceClientCheckAuthStub } from '@octoguild-licence/client/test/stub'
 import { expect } from 'chai'
-import { TestUser } from '../../../../test/helpers/methods/createUser'
-import testUtil, { TestAdmin } from '../../../../test/helpers/testUtil'
+import testUtil, { TestAdmin, TestApp } from '../../../../test/helpers/testUtil'
 import agent from '../../tests/testServer'
 
 describe('/admin:/verify [POST]', () => {
-  let user: TestUser
   let admin: TestAdmin
+  let app: TestApp
 
   before(async () => {
-    user = await testUtil.createUser()
     admin = await testUtil.createAdmin()
+
+    app = await testUtil.createApp()
+
+    licenceClientCheckAuthStub.callsFake(
+      async (params, cb) => cb({ isAuthorized: true, data: { app_id: '', app_ref: app.id } }),
+    )
   })
 
   it('it works', async () => {
-    const { status, body } = await agent.post('/verify').send({
-      token: user.token,
-    }).set('authorization', admin.authorization)
+    const { status, body } = await agent.post('/verify').set('authorization', admin.authorization)
 
     expect(status).to.equals(200)
-    // expect(body).to.deep.include({})
+
+    expect(body.app).to.deep.include({
+      id: app.id,
+      name: app.name,
+    })
   })
 })
