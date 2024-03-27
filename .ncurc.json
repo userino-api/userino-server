@@ -1,6 +1,7 @@
 {
   "reject": [
+    "chai", // causes ".ts" unknown error
     "@types/node",
-    "eslint"
+    "husky"
   ]
 }
