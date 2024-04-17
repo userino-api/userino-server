@@ -83,6 +83,12 @@ async function getAllByAccountId({ account_id }: Pick<AppUser, 'account_id'>): P
   return rows
 }
 
+async function getUserCountByApp({ app_id }:{ app_id: string}): Promise<number> {
+  const { rows } = await db.query('SELECT count(*) as count FROM app_users WHERE app_id = $1', [app_id])
+  const count = parseInt(rows[0].count)
+  return count
+}
+
 async function setAccountId({ id, account_id }: Pick<AppUser, 'id' | 'account_id'>) {
   invariant(id, 'setAccountId requires valid id')
   invariant(account_id, 'setAccountId requires valid account_id')
@@ -103,6 +109,7 @@ export default {
   getByAccountId,
   getMany,
   getAllByAccountId,
+  getUserCountByApp,
   setAccountId,
   delete: deleteUser,
 }

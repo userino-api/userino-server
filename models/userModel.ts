@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import format from 'pg-format'
 import db from '../libs/pg'
+import { AppUser, UserFull } from './appUserModel'
 
 export interface User {
   id: string
@@ -18,6 +19,21 @@ const get = async (user_id: string): Promise<User | null> => {
   const { rows = [] } = await db.query('SELECT * FROM users WHERE id = $1 LIMIT 1', [user_id])
 
   return rows[0]
+}
+
+async function getByAppFull(params: { app_id: string; offset?: number}): Promise<UserFull[]> {
+  const { offset = 0, app_id } = params
+
+  const { rows } = await db.query<UserFull>(`
+    SELECT users.*, app_users.*  FROM app_users 
+    LEFT JOIN users ON users.id = app_users.account_id
+    WHERE app_users.app_id = $1
+    ORDER BY app_users.created_at DESC
+    LIMIT 50
+    OFFSET $2
+  `, [app_id, offset])
+
+  return rows
 }
 
 async function getByUserName(userName: string): Promise<User | null> {
@@ -100,6 +116,7 @@ export default {
   get,
   getByUserName,
   getArray,
+  getByAppFull,
   setUserName,
   setName,
   setAsset,

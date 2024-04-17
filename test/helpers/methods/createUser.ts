@@ -110,7 +110,7 @@ export async function createUser(params?: { email?: string; type?: User['type'];
 
   let name = faker.person.fullName()
   let username = faker.internet.userName()
-  const avatar_url = faker.internet.avatar()
+  const avatar_url = faker.image.avatar()
   const account_id = await accountModel.create({ email, project_id: app.project_id })
   const user_id = await appUserModel.create({
     account_id, app_id: app.id,

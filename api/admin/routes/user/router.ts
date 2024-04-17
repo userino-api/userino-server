@@ -1,6 +1,6 @@
+import { checkValidator } from '@zvs001/express'
 import express from 'express'
 import { param } from 'express-validator'
-import { checkValidation } from '@libs/middleWares'
 import appUserModel, { AppUser } from '@models/appUserModel'
 import usersModel, { User } from '@models/userModel'
 import idRouter from './@id/router'
@@ -17,7 +17,7 @@ export interface RouterLocals {
   user: User
 }
 
-app.use<{ id: string }>('/:id', param('id').isUUID(), checkValidation, async (req, res, next) => {
+app.use<{ id: string }>('/:id', param('id').isUUID(), checkValidator, async (req, res, next) => {
   const { id } = req.params
 
   const appUser = await appUserModel.get(id)
