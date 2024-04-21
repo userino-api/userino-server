@@ -3,6 +3,7 @@ import { plugins } from '../../../plugins/plugins'
 import appRouter from './app/router'
 import healthGet from './health.get'
 import projectRouter from './project/router'
+import userRouter from './user/router'
 // import userRouter from './user/router'
 
 const app = express.Router()
@@ -11,7 +12,7 @@ app.use(healthGet)
 
 app.use('/app', appRouter)
 app.use('/project', projectRouter)
-// app.use('/user', userRouter)
+app.use('/user', userRouter)
 
 plugins.forEach(plugin => {
   const { route, routers } = plugin
