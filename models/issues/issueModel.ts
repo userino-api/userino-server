@@ -40,6 +40,18 @@ async function get(id: string): Promise<Issue | null> {
   return rows[0]
 }
 
+async function getForUser(id: string): Promise<Issue | null> {
+  const { rows } = await db.query(`
+    SELECT 
+        issues.issues.*, 
+        row_to_json(users.*) as user 
+    FROM issues.issues 
+    LEFT JOIN app_users ON app_users.id = issues.issues.app_user_id
+    LEFT JOIN users ON app_users.account_id = users.id
+    WHERE  issues.issues.id = $1`, [id])
+  return rows[0]
+}
+
 async function getByUser(id: string): Promise<Issue[]> {
   const { rows } = await db.query(`
     SELECT * FROM issues.issues 
@@ -53,8 +65,13 @@ async function getByUser(id: string): Promise<Issue[]> {
 
 async function getByApp({ app_id }: Pick<Issue, 'app_id'>): Promise<Issue[]> {
   const { rows = [] } = await db.query<Issue>(`
-     SELECT * FROM issues.issues 
-     WHERE app_id = $1 
+     SELECT 
+        issues.issues.*, 
+        row_to_json(users.*) as user 
+     FROM issues.issues 
+     LEFT JOIN app_users ON app_users.id = issues.issues.app_user_id
+     LEFT JOIN users ON app_users.account_id = users.id
+     WHERE issues.issues.app_id = $1 
      ORDER BY created_at DESC
      LIMIT 100 
   `, [app_id])
@@ -72,6 +89,7 @@ async function setStatus({ id, status }: Pick<Issue, 'id' | 'status'>) {
 export default {
   create,
   get,
+  getForUser,
   getByUser,
   getByApp,
   setStatus,
