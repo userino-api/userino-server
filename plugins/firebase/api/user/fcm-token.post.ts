@@ -1,6 +1,6 @@
+import { checkValidator } from '@zvs001/express'
 import express from 'express'
 import { body } from 'express-validator'
-import middleWares from '@libs/middleWares'
 import getDeviceInfoFromRequest from '../../../../utils/getDeviceInfoFromRequest'
 import firebaseFcmTokenModel from '../../models/firebaseFcmTokenModel'
 import { RouterLocals } from './router'
@@ -15,7 +15,7 @@ interface RouteResponse {}
 
 app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/fcm-token',
   body('token').isLength({ min: 100, max: 2000 }), // ~1205 chars
-  middleWares.checkValidation,
+  checkValidator,
   async (req, res) => {
     const { token } = req.body
     const { app_id, user_id } = req.session

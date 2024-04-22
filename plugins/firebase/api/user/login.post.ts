@@ -1,6 +1,7 @@
 import { getClientIP } from '@zvs001/express'
 import express from 'express'
 import { body } from 'express-validator'
+import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier'
 import appController from '@controllers/appAuthController'
 import middleWares from '@libs/middleWares'
 import onLoginEnd from '../../../../hooks/onLoginEnd'
@@ -36,7 +37,15 @@ app.post<{}, RouteResponse | RouteErrorResponse, RouteBody, {}, RouterLocals>('/
 
     const { firebaseApp } = res.locals
     const authInstance = firebaseApp.auth()
-    const decodedToken = await authInstance.verifyIdToken(accessToken)
+    let decodedToken : DecodedIdToken
+    try {
+      decodedToken = await authInstance.verifyIdToken(accessToken)
+    } catch (e) {
+      req.log(e.message)
+      req.log(e.errorCode)
+      req.log(e.code)
+      return res.sendError(501, e.message || 'Error during verifying token')
+    }
     const firebaseUser = authUtils.decodeFirebaseToken(decodedToken)
 
     const {
