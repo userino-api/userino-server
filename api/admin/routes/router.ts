@@ -1,6 +1,7 @@
 import licenceExpress from '@octoguild-licence/express'
 import express from 'express'
 import config from '../../../config/settings'
+import appRouter from './app/router'
 import authRouter from './auth/router'
 import healthGet from './health.get'
 import userRouter from './user/router'
@@ -32,5 +33,6 @@ app.use([
 ])
 app.use('/auth', authRouter)
 app.use('/user', userRouter)
+app.use('/app', appRouter)
 
 export default app
