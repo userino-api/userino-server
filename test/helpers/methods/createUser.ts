@@ -8,6 +8,7 @@ import deviceMobileModel from '@models/devices/deviceMobileModel'
 import deviceUserMobileModel from '@models/devices/deviceUserMobileModel'
 import tokensModel from '@models/tokensModel'
 import userContactsModel from '@models/userContactsModel'
+import userLocalizationModel from '@models/userLocalizationModel'
 import usersModel, { User } from '@models/userModel'
 
 export class TestUser {
@@ -80,6 +81,12 @@ export class TestUser {
       account_id: this.account_id,
       email: this.email,
       phone_number: null,
+    })
+  }
+
+  async setLocalization() {
+    await userLocalizationModel.create({
+      account_id: this.account_id,
     })
   }
 
