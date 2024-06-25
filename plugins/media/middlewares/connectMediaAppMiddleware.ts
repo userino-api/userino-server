@@ -7,7 +7,7 @@ export interface RouterLocals {
 }
 
 const connectMediaAppMiddleware: RequestHandler = async (req, res, next) => {
-  const { project_id } = req.session
+  const project_id = res.locals?.project_id || req.session?.project_id // local is for admin api
 
   try {
     let mediaClient = await mediaClientUtils.getInitializedApp({ project_id })

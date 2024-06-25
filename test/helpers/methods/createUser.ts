@@ -120,7 +120,7 @@ export async function createUser(params?: { email?: string; type?: User['type'];
   const avatar_url = faker.image.avatar()
   const account_id = await accountModel.create({ email, project_id: app.project_id })
   const user_id = await appUserModel.create({
-    account_id, app_id: app.id,
+    account_id, app_id: app.id, project_id: app.project_id,
   })
   await usersModel.create({
     id: account_id, name, username, avatar_url, type,

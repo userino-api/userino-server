@@ -13,6 +13,8 @@ app.use([
 ])
 
 export interface RouterLocals {
+  project_id: string
+  app_id: string
   appUser: AppUser
   user: User
 }
@@ -27,7 +29,14 @@ app.use<{ id: string }>('/:id', param('id').isUUID(), checkValidator, async (req
 
   const user = await usersModel.get(appUser.account_id)
 
-  const locals: RouterLocals = { appUser, user: user as User }
+  // todo here we need to check permission
+
+  const locals: RouterLocals = {
+    appUser,
+    user: user as User,
+    project_id: appUser.project_id,
+    app_id: appUser.app_id,
+  }
   res.locals = locals
 
   next()

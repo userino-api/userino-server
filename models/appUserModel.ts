@@ -9,27 +9,28 @@ export interface AppUser {
   account_id: string
   id: string
   app_id: string
+  project_id: string
   created_at: string
 }
 
 export interface UserFull extends User, AppUser{ }
 
 export type UserAccountCreatePayload = Pick<AppUser,
-  'account_id' | 'app_id'
+  'account_id' | 'app_id' | 'project_id'
   >
 
 async function create(
   payload: UserAccountCreatePayload,
 ): Promise<string> {
   let {
-    app_id, account_id,
+    app_id, account_id, project_id,
   } = payload
   const id = uuid()
 
   await db.query(`
-    INSERT INTO app_users (id, app_id, account_id)
-    VALUES                           ($1,     $2   ,        $3      )
-`, [id, app_id, account_id])
+    INSERT INTO app_users (id, app_id, account_id, project_id)
+    VALUES                           ($1,     $2   ,        $3       ,        $4      )
+`, [id, app_id, account_id, project_id])
 
   return id
 }

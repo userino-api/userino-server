@@ -7,7 +7,10 @@ import coreEventList from '../events/coreEventList'
 import getDeviceInfoFromRequest from '../utils/getDeviceInfoFromRequest'
 
 async function createConnection({ app_id, account_id }: { account_id: string; app_id: string }): Promise<string> {
-  const id = await appUserModel.create({ account_id, app_id })
+  const app = await appsModel.get(app_id)
+  invariant(app, 'app must exists')
+
+  const id = await appUserModel.create({ account_id, app_id, project_id: app.project_id })
 
   // todo user connected to app event?
   coreEventList.appUserCreated({ id, app_id, account_id })
